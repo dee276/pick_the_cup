@@ -110,3 +110,27 @@ export function extractYouTubeId(url: string): string | null {
   const m = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
   return m ? m[1] : null;
 }
+
+export interface SimpleMatch {
+  id: string;
+  homeTeam: string;
+  awayTeam: string;
+  homeScore: string | null;
+  awayScore: string | null;
+  status: string;
+  venue: string;
+}
+
+export async function fetchLiveAndTodayMatches(): Promise<SimpleMatch[]> {
+  const today = new Date().toISOString().split("T")[0];
+  const events = await getEventsByDay(today);
+  return events.map((e) => ({
+    id: e.idEvent,
+    homeTeam: e.strHomeTeam,
+    awayTeam: e.strAwayTeam,
+    homeScore: e.intHomeScore,
+    awayScore: e.intAwayScore,
+    status: statusToAppStatus(e.strStatus),
+    venue: e.strVenue,
+  }));
+}

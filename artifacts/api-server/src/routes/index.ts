@@ -7,6 +7,8 @@ import predictionsRouter from "./predictions";
 import leaguesRouter from "./leagues";
 import profileRouter from "./profile";
 import highlightsRouter from "./highlights";
+import eventsRouter from "./events";
+import preferencesRouter from "./preferences";
 
 const router: IRouter = Router();
 
@@ -18,5 +20,7 @@ router.use(predictionsRouter);
 router.use(leaguesRouter);
 router.use(profileRouter);
 router.use(highlightsRouter);
+router.use(eventsRouter);
+router.use(preferencesRouter);
 
 export default router;
