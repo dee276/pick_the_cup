@@ -1,22 +1,32 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: FanSphere API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: dashboard
+    description: Dashboard summary
+  - name: matches
+    description: Match operations
+  - name: standings
+    description: Tournament standings
+  - name: predictions
+    description: User predictions
+  - name: leagues
+    description: Private leagues
+  - name: profile
+    description: User profile
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +34,452 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /dashboard:
+    get:
+      operationId: getDashboard
+      tags: [dashboard]
+      summary: Get dashboard summary
+      responses:
+        "200":
+          description: Dashboard data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dashboard"
+
+  /matches:
+    get:
+      operationId: getMatches
+      tags: [matches]
+      summary: List all matches
+      parameters:
+        - name: date
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of matches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Match"
+
+  /matches/{id}:
+    get:
+      operationId: getMatch
+      tags: [matches]
+      summary: Get match details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Match detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchDetail"
+        "404":
+          description: Not found
+
+  /standings:
+    get:
+      operationId: getStandings
+      tags: [standings]
+      summary: Get group standings
+      parameters:
+        - name: group
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Group standings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupStanding"
+
+  /predictions:
+    get:
+      operationId: getPredictions
+      tags: [predictions]
+      summary: Get user predictions
+      responses:
+        "200":
+          description: User predictions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Prediction"
+    post:
+      operationId: createPrediction
+      tags: [predictions]
+      summary: Create a prediction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PredictionInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Prediction"
+        "400":
+          description: Invalid input
+
+  /leagues:
+    get:
+      operationId: getLeagues
+      tags: [leagues]
+      summary: Get user's private leagues
+      responses:
+        "200":
+          description: List of leagues
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/League"
+
+  /leagues/{id}:
+    get:
+      operationId: getLeague
+      tags: [leagues]
+      summary: Get league details with leaderboard
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: League with rankings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeagueDetail"
+        "404":
+          description: Not found
+
+  /profile:
+    get:
+      operationId: getProfile
+      tags: [profile]
+      summary: Get user profile
+      responses:
+        "200":
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    Dashboard:
+      type: object
+      required: [featuredMatch, todayMatches, myPredictions, myLeague]
+      properties:
+        featuredMatch:
+          $ref: "#/components/schemas/Match"
+        todayMatches:
+          type: array
+          items:
+            $ref: "#/components/schemas/Match"
+        myPredictions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Prediction"
+        myLeague:
+          $ref: "#/components/schemas/LeagueSummary"
+
+    Team:
+      type: object
+      required: [id, name, code, flag]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        code:
+          type: string
+        flag:
+          type: string
+
+    Match:
+      type: object
+      required: [id, teamA, teamB, datetime, status, group]
+      properties:
+        id:
+          type: integer
+        teamA:
+          $ref: "#/components/schemas/Team"
+        teamB:
+          $ref: "#/components/schemas/Team"
+        scoreA:
+          type: ["integer", "null"]
+        scoreB:
+          type: ["integer", "null"]
+        datetime:
+          type: string
+        status:
+          type: string
+          enum: [upcoming, live, finished]
+        group:
+          type: string
+        minute:
+          type: ["integer", "null"]
+        stadium:
+          type: ["string", "null"]
+
+    MatchEvent:
+      type: object
+      required: [id, type, minute, team, player]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [goal, yellow_card, red_card, substitution]
+        minute:
+          type: integer
+        team:
+          type: string
+        player:
+          type: string
+
+    MatchStat:
+      type: object
+      required: [label, valueA, valueB]
+      properties:
+        label:
+          type: string
+        valueA:
+          type: string
+        valueB:
+          type: string
+
+    MatchDetail:
+      type: object
+      required: [match, events, stats]
+      properties:
+        match:
+          $ref: "#/components/schemas/Match"
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/MatchEvent"
+        stats:
+          type: array
+          items:
+            $ref: "#/components/schemas/MatchStat"
+        userPrediction:
+          $ref: "#/components/schemas/Prediction"
+
+    TeamStanding:
+      type: object
+      required: [team, played, won, drawn, lost, goalsFor, goalsAgainst, points, status]
+      properties:
+        team:
+          $ref: "#/components/schemas/Team"
+        played:
+          type: integer
+        won:
+          type: integer
+        drawn:
+          type: integer
+        lost:
+          type: integer
+        goalsFor:
+          type: integer
+        goalsAgainst:
+          type: integer
+        goalDiff:
+          type: integer
+        points:
+          type: integer
+        status:
+          type: string
+          enum: [qualified, danger, eliminated, pending]
+
+    GroupStanding:
+      type: object
+      required: [group, teams, keyScenario]
+      properties:
+        group:
+          type: string
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamStanding"
+        keyScenario:
+          type: ["string", "null"]
+
+    Prediction:
+      type: object
+      required: [id, matchId, teamA, teamB, predictedScoreA, predictedScoreB, status]
+      properties:
+        id:
+          type: integer
+        matchId:
+          type: integer
+        teamA:
+          $ref: "#/components/schemas/Team"
+        teamB:
+          $ref: "#/components/schemas/Team"
+        predictedScoreA:
+          type: integer
+        predictedScoreB:
+          type: integer
+        pointsEarned:
+          type: ["integer", "null"]
+        status:
+          type: string
+          enum: [pending, correct, partial, wrong]
+
+    PredictionInput:
+      type: object
+      required: [matchId, predictedScoreA, predictedScoreB]
+      properties:
+        matchId:
+          type: integer
+        predictedScoreA:
+          type: integer
+          minimum: 0
+        predictedScoreB:
+          type: integer
+          minimum: 0
+
+    LeagueMember:
+      type: object
+      required: [rank, name, initials, points, change]
+      properties:
+        rank:
+          type: integer
+        name:
+          type: string
+        initials:
+          type: string
+        points:
+          type: integer
+        change:
+          type: integer
+        isCurrentUser:
+          type: boolean
+
+    LeagueSummary:
+      type: object
+      required: [id, name, myRank, myPoints, memberCount]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        emoji:
+          type: ["string", "null"]
+        myRank:
+          type: integer
+        myPoints:
+          type: integer
+        memberCount:
+          type: integer
+
+    League:
+      type: object
+      required: [id, name, memberCount, myRank, myPoints, inviteCode]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        emoji:
+          type: ["string", "null"]
+        memberCount:
+          type: integer
+        myRank:
+          type: integer
+        myPoints:
+          type: integer
+        inviteCode:
+          type: string
+
+    LeagueDetail:
+      type: object
+      required: [id, name, memberCount, myRank, myPoints, inviteCode, members, badges]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        emoji:
+          type: ["string", "null"]
+        memberCount:
+          type: integer
+        myRank:
+          type: integer
+        myPoints:
+          type: integer
+        inviteCode:
+          type: string
+        members:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeagueMember"
+        badges:
+          type: array
+          items:
+            type: string
+
+    Profile:
+      type: object
+      required: [id, name, initials, fanSince, location, totalPoints, predictionAccuracy, predictionCount, favoriteTeams]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        initials:
+          type: string
+        fanSince:
+          type: integer
+        location:
+          type: string
+        totalPoints:
+          type: integer
+        predictionAccuracy:
+          type: integer
+        predictionCount:
+          type: integer
+        favoriteTeams:
+          type: array
+          items:
+            $ref: "#/components/schemas/Team"

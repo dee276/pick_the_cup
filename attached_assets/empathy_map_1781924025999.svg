@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="Arial, sans-serif">
+  
+  <rect width="800" height="600" fill="#0F172A"/>
+  
+  
+  <text x="400" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#FFFFFF">Empathy Map — Utilisateurs FanSphere</text>
+  
+  
+  <circle cx="400" cy="310" r="60" fill="#2563EB" stroke="#60A5FA" stroke-width="2"/>
+  <text x="400" y="305" text-anchor="middle" font-size="13" font-weight="bold" fill="#FFFFFF">UTILISATEUR</text>
+  <text x="400" y="322" text-anchor="middle" font-size="11" fill="#BFDBFE">Fan de soccer</text>
+
+  
+  <rect x="30" y="60" width="330" height="220" rx="12" fill="#1E293B" stroke="#2563EB" stroke-width="1.5"/>
+  <rect x="30" y="60" width="330" height="36" rx="12" fill="#2563EB"/>
+  <rect x="30" y="84" width="330" height="12" fill="#2563EB"/>
+  <text x="195" y="83" text-anchor="middle" font-size="13" font-weight="bold" fill="#FFFFFF">💭  PENSE</text>
+  <text x="55" y="118" font-size="11" fill="#94A3B8">•  Je veux comprendre rapidement ce qui se passe.</text>
+  <text x="55" y="140" font-size="11" fill="#94A3B8">•  Je ne veux rien manquer d'important.</text>
+  <text x="55" y="162" font-size="11" fill="#94A3B8">•  Quel impact ce match a-t-il sur le classement ?</text>
+  <text x="55" y="184" font-size="11" fill="#94A3B8">•  Comment se comparent mes prédictions ?</text>
+  <text x="55" y="206" font-size="11" fill="#94A3B8">•  Mon équipe peut-elle encore se qualifier ?</text>
+  <text x="55" y="228" font-size="11" fill="#94A3B8">•  Est-ce que mes amis ont fait de bonnes prédictions ?</text>
+  <text x="55" y="250" font-size="11" fill="#94A3B8">•  Pourquoi c'est si compliqué à suivre ?</text>
+
+  
+  <rect x="440" y="60" width="330" height="220" rx="12" fill="#1E293B" stroke="#15803D" stroke-width="1.5"/>
+  <rect x="440" y="60" width="330" height="36" rx="12" fill="#15803D"/>
+  <rect x="440" y="84" width="330" height="12" fill="#15803D"/>
+  <text x="605" y="83" text-anchor="middle" font-size="13" font-weight="bold" fill="#FFFFFF">❤️  RESSENT</text>
+  <text x="465" y="118" font-size="11" fill="#94A3B8">•  Excitation pendant les matchs.</text>
+  <text x="465" y="140" font-size="11" fill="#94A3B8">•  Curiosité pour les statistiques et classements.</text>
+  <text x="465" y="162" font-size="11" fill="#94A3B8">•  Fierté lors d'une bonne prédiction.</text>
+  <text x="465" y="184" font-size="11" fill="#94A3B8">•  Frustration face à la surcharge d'information.</text>
+  <text x="465" y="206" font-size="11" fill="#94A3B8">•  Sentiment d'appartenance communautaire.</text>
+  <text x="465" y="228" font-size="11" fill="#94A3B8">•  Anxiété de manquer un événement important.</text>
+  <text x="465" y="250" font-size="11" fill="#94A3B8">•  Satisfaction d'une victoire dans la ligue.</text>
+
+  
+  <rect x="30" y="340" width="330" height="220" rx="12" fill="#1E293B" stroke="#D97706" stroke-width="1.5"/>
+  <rect x="30" y="340" width="330" height="36" rx="12" fill="#D97706"/>
+  <rect x="30" y="364" width="330" height="12" fill="#D97706"/>
+  <text x="195" y="363" text-anchor="middle" font-size="13" font-weight="bold" fill="#FFFFFF">🗣️  DIT</text>
+  <text x="55" y="398" font-size="11" fill="#94A3B8">•  « Qui joue aujourd'hui ? »</text>
+  <text x="55" y="420" font-size="11" fill="#94A3B8">•  « Est-ce que mon équipe est encore qualifiée ? »</text>
+  <text x="55" y="442" font-size="11" fill="#94A3B8">•  « Pourquoi c'est si compliqué à suivre ? »</text>
+  <text x="55" y="464" font-size="11" fill="#94A3B8">•  « J'ai besoin de tout au même endroit. »</text>
+  <text x="55" y="486" font-size="11" fill="#94A3B8">•  « Donne-moi l'essentiel en 30 secondes. »</text>
+  <text x="55" y="508" font-size="11" fill="#94A3B8">•  « Plus j'ai de données, meilleures mes prédictions. »</text>
+  <text x="55" y="530" font-size="11" fill="#94A3B8">•  « Je suis premier dans ma ligue ! »</text>
+
+  
+  <rect x="440" y="340" width="330" height="220" rx="12" fill="#1E293B" stroke="#0891B2" stroke-width="1.5"/>
+  <rect x="440" y="340" width="330" height="36" rx="12" fill="#0891B2"/>
+  <rect x="440" y="364" width="330" height="12" fill="#0891B2"/>
+  <text x="605" y="363" text-anchor="middle" font-size="13" font-weight="bold" fill="#FFFFFF">🎯  FAIT</text>
+  <text x="465" y="398" font-size="11" fill="#94A3B8">•  Vérifie les scores plusieurs fois par jour.</text>
+  <text x="465" y="420" font-size="11" fill="#94A3B8">•  Consulte plusieurs applications simultanément.</text>
+  <text x="465" y="442" font-size="11" fill="#94A3B8">•  Partage ses prédictions avec ses amis.</text>
+  <text x="465" y="464" font-size="11" fill="#94A3B8">•  Consulte les classements après chaque match.</text>
+  <text x="465" y="486" font-size="11" fill="#94A3B8">•  Participe à des discussions sur les réseaux sociaux.</text>
+  <text x="465" y="508" font-size="11" fill="#94A3B8">•  Regarde les résumés des matchs manqués.</text>
+  <text x="465" y="530" font-size="11" fill="#94A3B8">•  Analyse les statistiques des équipes.</text>
+
+  
+  <line x1="360" y1="310" x2="30" y2="310" stroke="#334155" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="440" y1="310" x2="770" y2="310" stroke="#334155" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="400" y1="250" x2="400" y2="60" stroke="#334155" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="400" y1="370" x2="400" y2="560" stroke="#334155" stroke-width="1" stroke-dasharray="4,3"/>
+</svg>
