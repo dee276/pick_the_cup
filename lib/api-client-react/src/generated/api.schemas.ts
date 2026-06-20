@@ -195,6 +195,22 @@ export interface Profile {
   favoriteTeams: Team[];
 }
 
+export interface Highlight {
+  id: string;
+  homeTeam: string;
+  awayTeam: string;
+  homeFlag: string;
+  awayFlag: string;
+  scoreHome?: string | null;
+  scoreAway?: string | null;
+  date: string;
+  group: string;
+  status: string;
+  videoId?: string | null;
+  thumbnail?: string | null;
+  youtubeUrl: string;
+}
+
 export type GetMatchesParams = {
 date?: string;
 status?: string;

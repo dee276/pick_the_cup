@@ -25,6 +25,7 @@ import type {
   GetStandingsParams,
   GroupStanding,
   HealthStatus,
+  Highlight,
   League,
   LeagueDetail,
   Match,
@@ -812,6 +813,83 @@ export function useGetProfile<TData = Awaited<ReturnType<typeof getProfile>>, TE
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetProfileQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetHighlightsUrl = () => {
+
+
+
+
+  return `/api/highlights`
+}
+
+/**
+ * @summary Get match highlight reels
+ */
+export const getHighlights = async ( options?: RequestInit): Promise<Highlight[]> => {
+
+  return customFetch<Highlight[]>(getGetHighlightsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetHighlightsQueryKey = () => {
+    return [
+    `/api/highlights`
+    ] as const;
+    }
+
+
+export const getGetHighlightsQueryOptions = <TData = Awaited<ReturnType<typeof getHighlights>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHighlights>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetHighlightsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getHighlights>>> = ({ signal }) => getHighlights({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getHighlights>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetHighlightsQueryResult = NonNullable<Awaited<ReturnType<typeof getHighlights>>>
+export type GetHighlightsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get match highlight reels
+ */
+
+export function useGetHighlights<TData = Awaited<ReturnType<typeof getHighlights>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHighlights>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetHighlightsQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

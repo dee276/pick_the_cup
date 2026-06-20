@@ -11,6 +11,7 @@ export * from './getMatchesParams';
 export * from './getStandingsParams';
 export * from './groupStanding';
 export * from './healthStatus';
+export * from './highlight';
 export * from './league';
 export * from './leagueDetail';
 export * from './leagueMember';

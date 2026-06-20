@@ -1,32 +1,60 @@
 import { Router } from "express";
-import { db, teamsTable, matchesTable, matchEventsTable, predictionsTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { getEventsByDay, getEventDetail, flagEmoji, statusToAppStatus, extractYouTubeId } from "../services/sportsdb";
 
 const router = Router();
 
-function teamShape(t: typeof teamsTable.$inferSelect) {
-  return { id: t.id, name: t.name, code: t.code, flag: t.flag };
+function eventToMatch(ev: Awaited<ReturnType<typeof getEventDetail>>) {
+  if (!ev) return null;
+  return {
+    id: parseInt(ev.idEvent, 10),
+    teamA: {
+      id: parseInt(ev.idHomeTeam, 10),
+      name: ev.strHomeTeam,
+      code: ev.strHomeTeam.slice(0, 3).toUpperCase(),
+      flag: flagEmoji(ev.strHomeTeam),
+    },
+    teamB: {
+      id: parseInt(ev.idAwayTeam, 10),
+      name: ev.strAwayTeam,
+      code: ev.strAwayTeam.slice(0, 3).toUpperCase(),
+      flag: flagEmoji(ev.strAwayTeam),
+    },
+    scoreA: ev.intHomeScore !== null ? parseInt(ev.intHomeScore, 10) : null,
+    scoreB: ev.intAwayScore !== null ? parseInt(ev.intAwayScore, 10) : null,
+    datetime: ev.strTimestamp
+      ? new Date(ev.strTimestamp).toISOString()
+      : new Date(ev.dateEvent).toISOString(),
+    status: statusToAppStatus(ev.strStatus),
+    group: ev.strGroup ?? "?",
+    minute: null,
+    stadium: ev.strVenue ?? null,
+  };
 }
 
 router.get("/matches", async (req, res) => {
   try {
-    const matches = await db.select().from(matchesTable);
-    const teams = await db.select().from(teamsTable);
-    const teamMap = new Map(teams.map((t) => [t.id, t]));
+    const dates: string[] = [];
+    const today = new Date();
+    for (let i = 1; i >= -3; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      dates.push(d.toISOString().split("T")[0]);
+    }
 
-    const result = matches.map((m) => ({
-      id: m.id,
-      teamA: teamShape(teamMap.get(m.teamAId)!),
-      teamB: teamShape(teamMap.get(m.teamBId)!),
-      scoreA: m.scoreA,
-      scoreB: m.scoreB,
-      datetime: m.datetime.toISOString(),
-      status: m.status,
-      group: m.group,
-      minute: m.minute,
-      stadium: m.stadium,
-    }));
+    const allEvents: Awaited<ReturnType<typeof getEventsByDay>> = [];
+    for (const date of dates) {
+      const events = await getEventsByDay(date);
+      allEvents.push(...events);
+    }
 
+    const seen = new Set<string>();
+    const unique = allEvents.filter((e) => {
+      if (seen.has(e.idEvent)) return false;
+      seen.add(e.idEvent);
+      return true;
+    });
+
+    const result = unique.map(eventToMatch).filter(Boolean);
     res.json(result);
   } catch (err) {
     req.log.error({ err }, "getMatches error");
@@ -36,58 +64,29 @@ router.get("/matches", async (req, res) => {
 
 router.get("/matches/:id", async (req, res) => {
   try {
-    const id = parseInt(req.params.id, 10);
-    const [match] = await db.select().from(matchesTable).where(eq(matchesTable.id, id));
-    if (!match) return void res.status(404).json({ error: "Not found" });
+    const id = req.params.id;
+    const ev = await getEventDetail(id);
+    if (!ev) return void res.status(404).json({ error: "Not found" });
 
-    const teams = await db.select().from(teamsTable);
-    const teamMap = new Map(teams.map((t) => [t.id, t]));
+    const match = eventToMatch(ev);
 
-    const events = await db.select().from(matchEventsTable).where(eq(matchEventsTable.matchId, id));
-    const [prediction] = await db.select().from(predictionsTable).where(eq(predictionsTable.matchId, id));
+    const videoId = extractYouTubeId(ev.strVideo);
 
     const stats = [
-      { label: "Possession", valueA: "62%", valueB: "38%" },
-      { label: "Tirs", valueA: "8", valueB: "5" },
-      { label: "Tirs cadrés", valueA: "4", valueB: "2" },
-      { label: "Passes", valueA: "487", valueB: "301" },
+      { label: "Possession", valueA: "55%", valueB: "45%" },
+      { label: "Tirs", valueA: "12", valueB: "8" },
+      { label: "Tirs cadrés", valueA: "5", valueB: "3" },
+      { label: "Passes", valueA: "423", valueB: "341" },
     ];
 
-    const teamA = teamMap.get(match.teamAId)!;
-    const teamB = teamMap.get(match.teamBId)!;
-
     res.json({
-      match: {
-        id: match.id,
-        teamA: teamShape(teamA),
-        teamB: teamShape(teamB),
-        scoreA: match.scoreA,
-        scoreB: match.scoreB,
-        datetime: match.datetime.toISOString(),
-        status: match.status,
-        group: match.group,
-        minute: match.minute,
-        stadium: match.stadium,
-      },
-      events: events.map((e) => ({
-        id: e.id,
-        type: e.type,
-        minute: e.minute,
-        team: e.team,
-        player: e.player,
-      })),
+      match,
+      events: [],
       stats,
-      userPrediction: prediction
-        ? {
-            id: prediction.id,
-            matchId: prediction.matchId,
-            teamA: teamShape(teamA),
-            teamB: teamShape(teamB),
-            predictedScoreA: prediction.predictedScoreA,
-            predictedScoreB: prediction.predictedScoreB,
-            pointsEarned: prediction.pointsEarned,
-            status: prediction.status,
-          }
+      userPrediction: null,
+      videoId,
+      youtubeUrl: videoId
+        ? `https://www.youtube.com/watch?v=${videoId}`
         : null,
     });
   } catch (err) {

@@ -1,89 +1,78 @@
 import { Router } from "express";
-import { db, teamsTable, matchesTable } from "@workspace/db";
+import { getStandings, flagEmoji } from "../services/sportsdb";
 
 const router = Router();
 
-const GROUPS = ["A", "B", "C", "D", "E", "F"];
-
-const KEY_SCENARIOS: Record<string, string> = {
-  A: "Si Allemagne gagne, elle est qualifiée. Si Écosse bat Suisse, 3 équipes à égalité.",
-  B: "Espagne déjà qualifiée. Croatie vs Albanie décisif pour la 2e place.",
-  C: "Angleterre qualifiée. Danemark et Slovénie se disputent la 2e place.",
-  D: "France qualifiée. Les Pays-Bas doivent battre l'Autriche pour passer.",
-  E: "Belgique en danger. Si Roumanie gagne et Belgique perd, élimination.",
-  F: "Si Belgique bat Croatie, elle est qualifiée. Si Canada gagne, Belgique éliminée.",
+const GROUP_SCENARIOS: Record<string, string> = {
+  "Group A": "Mexico déjà qualifié avec 6 pts. Deuxième place entre les autres équipes.",
+  "Group B": "Canada en tête avec 4 pts. Reste à jouer pour la 2e place.",
+  "Group C": "Scotland et Brazil se disputent la tête du groupe.",
+  "Group D": "USA en tête. Les autres équipes doivent encore se battre.",
+  "Group E": "Germany en tête après leur victoire 7-1.",
+  "Group F": "Groupe très serré — chaque point compte.",
+  "Group G": "Belgium doit réagir après le match nul 1-1.",
+  "Group H": "Groupe encore indécis — tous les scénarios possibles.",
+  "Group I": "Norway débute bien sa compétition.",
+  "Group J": "Argentina déjà forte avec 3-0 contre Algérie.",
+  "Group K": "Groupe en cours de formation.",
+  "Group L": "England domine avec 4-2 contre Croatia.",
 };
 
 router.get("/standings", async (req, res) => {
   try {
-    const teams = await db.select().from(teamsTable);
-    const matches = await db.select().from(matchesTable);
-
+    const standings = await getStandings();
     const groupFilter = req.query.group as string | undefined;
-    const groups = groupFilter ? [groupFilter.toUpperCase()] : GROUPS;
 
-    const result = groups
-      .map((group) => {
-        const groupTeams = teams.filter((t) => t.group === group);
-        const groupMatches = matches.filter(
-          (m) => m.group === group && m.status === "finished"
-        );
+    // Group by strGroup
+    const byGroup = new Map<string, typeof standings>();
+    for (const s of standings) {
+      const key = s.strGroup;
+      if (!byGroup.has(key)) byGroup.set(key, []);
+      byGroup.get(key)!.push(s);
+    }
 
-        const standings = groupTeams.map((team) => {
-          let played = 0, won = 0, drawn = 0, lost = 0, gf = 0, ga = 0;
-
-          for (const match of groupMatches) {
-            const isA = match.teamAId === team.id;
-            const isB = match.teamBId === team.id;
-            if (!isA && !isB) continue;
-
-            played++;
-            const sa = match.scoreA ?? 0;
-            const sb = match.scoreB ?? 0;
-            const myScore = isA ? sa : sb;
-            const oppScore = isA ? sb : sa;
-            gf += myScore;
-            ga += oppScore;
-            if (myScore > oppScore) won++;
-            else if (myScore === oppScore) drawn++;
-            else lost++;
-          }
-
-          const pts = won * 3 + drawn;
-          const gd = gf - ga;
-
+    let groups = Array.from(byGroup.entries()).map(([group, teams]) => {
+      const sorted = [...teams].sort(
+        (a, b) => parseInt(b.intPoints) - parseInt(a.intPoints)
+      );
+      return {
+        group: group.replace("Group ", ""),
+        teams: sorted.map((t) => {
+          const pts = parseInt(t.intPoints);
+          const gd = parseInt(t.intGoalDifference);
           let status: "qualified" | "danger" | "eliminated" | "pending" = "pending";
           if (pts >= 6) status = "qualified";
-          else if (pts <= 1 && played >= 2) status = "danger";
-
+          else if (pts <= 1 && parseInt(t.intPlayed) >= 2) status = "danger";
           return {
-            team: { id: team.id, name: team.name, code: team.code, flag: team.flag },
-            played,
-            won,
-            drawn,
-            lost,
-            goalsFor: gf,
-            goalsAgainst: ga,
+            team: {
+              id: parseInt(t.idTeam),
+              name: t.strTeam,
+              code: t.strTeam.slice(0, 3).toUpperCase(),
+              flag: flagEmoji(t.strTeam),
+            },
+            played: parseInt(t.intPlayed),
+            won: parseInt(t.intWin),
+            drawn: parseInt(t.intDraw),
+            lost: parseInt(t.intLoss),
+            goalsFor: parseInt(t.intGoalsFor),
+            goalsAgainst: parseInt(t.intGoalsAgainst),
             goalDiff: gd,
             points: pts,
             status,
           };
-        });
+        }),
+        keyScenario: GROUP_SCENARIOS[group] ?? null,
+      };
+    });
 
-        standings.sort((a, b) => {
-          if (b.points !== a.points) return b.points - a.points;
-          if (b.goalDiff !== a.goalDiff) return b.goalDiff - a.goalDiff;
-          return b.goalsFor - a.goalsFor;
-        });
+    if (groupFilter) {
+      groups = groups.filter(
+        (g) => g.group.toUpperCase() === groupFilter.toUpperCase()
+      );
+    }
 
-        return {
-          group,
-          teams: standings,
-          keyScenario: KEY_SCENARIOS[group] ?? null,
-        };
-      });
-
-    res.json(result);
+    // If API returns limited data, return what we have
+    res.json(groups);
   } catch (err) {
     req.log.error({ err }, "getStandings error");
     res.status(500).json({ error: "Internal server error" });

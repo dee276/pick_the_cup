@@ -2,116 +2,196 @@ import { useGetDashboard, getGetDashboardQueryKey } from "@workspace/api-client-
 import { Link } from "wouter";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronRight, Calendar, TrendingUp } from "lucide-react";
 import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import { HighlightsReel } from "@/components/HighlightsReel";
+
+function MatchCard({ match }: { match: NonNullable<ReturnType<typeof useGetDashboard>["data"]>["todayMatches"][0] }) {
+  const isLive = match.status === "live";
+  const isFinished = match.status === "finished";
+  return (
+    <Link href={`/match/${match.id}`} className="block">
+      <Card className="p-4 bg-white border border-[#E2E8F0] shadow-sm active:scale-[0.98] transition-transform hover:bg-[#F8FAFC]">
+        <div className="flex items-center gap-3">
+          {/* Team A */}
+          <div className="flex items-center gap-2 flex-1">
+            <span className="text-2xl">{match.teamA.flag}</span>
+            <span className="text-sm font-bold text-[#1E293B]">{match.teamA.code}</span>
+          </div>
+
+          {/* Score / time */}
+          <div className="flex flex-col items-center min-w-[72px]">
+            {isLive || isFinished ? (
+              <>
+                <span className="text-lg font-black text-[#1E293B]">
+                  {match.scoreA} – {match.scoreB}
+                </span>
+                {isLive && (
+                  <span className="text-[9px] font-bold text-[#DC2626] animate-pulse">EN DIRECT</span>
+                )}
+                {isFinished && (
+                  <span className="text-[9px] font-medium text-[#64748B]">TERMINÉ</span>
+                )}
+              </>
+            ) : (
+              <span className="text-sm font-bold text-[#64748B]">
+                {format(new Date(match.datetime), "HH:mm", { locale: fr })}
+              </span>
+            )}
+          </div>
+
+          {/* Team B */}
+          <div className="flex items-center gap-2 flex-1 justify-end">
+            <span className="text-sm font-bold text-[#1E293B]">{match.teamB.code}</span>
+            <span className="text-2xl">{match.teamB.flag}</span>
+          </div>
+        </div>
+
+        {/* Group label */}
+        <div className="text-center mt-1">
+          <span className="text-[10px] text-[#94A3B8] font-medium">Groupe {match.group}</span>
+        </div>
+      </Card>
+    </Link>
+  );
+}
 
 export default function Dashboard() {
-  const { data: dashboard, isLoading } = useGetDashboard();
+  const { data: dashboard, isLoading } = useGetDashboard({
+    query: { queryKey: getGetDashboardQueryKey(), staleTime: 30_000 },
+  });
 
   if (isLoading) {
-    return <div className="p-4 space-y-4">Loading dashboard...</div>;
+    return (
+      <div className="p-4 space-y-6 pt-10">
+        <div>
+          <Skeleton className="h-7 w-40 mb-1" />
+          <Skeleton className="h-4 w-56" />
+        </div>
+        <Skeleton className="h-36 w-full rounded-xl" />
+        <Skeleton className="h-14 w-full rounded-xl" />
+        <div className="space-y-3">
+          {[1, 2].map((i) => <Skeleton key={i} className="h-20 w-full rounded-xl" />)}
+        </div>
+      </div>
+    );
   }
 
   if (!dashboard) return null;
 
+  const featured = dashboard.featuredMatch;
+  const isLive = featured?.status === "live";
+  const isFinished = featured?.status === "finished";
+
   return (
-    <div className="p-4 space-y-6">
-      <header className="pt-2 pb-4">
-        <h1 className="text-2xl font-bold text-foreground">FanSphere</h1>
-        <p className="text-muted-foreground text-sm">Welcome back, get ready for matchday.</p>
+    <div className="p-4 space-y-6 pt-10">
+      {/* Header */}
+      <header>
+        <h1 className="text-2xl font-black text-[#1E293B]">FanSphere ⚽</h1>
+        <p className="text-[#64748B] text-sm mt-0.5">Coupe du Monde 2026 · Données officielles</p>
       </header>
 
-      {/* Featured Live Match */}
-      {dashboard.featuredMatch && (
+      {/* Featured Match */}
+      {featured && (
         <section>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-bold">Featured Match</h2>
-            <Badge variant="destructive" className="animate-pulse bg-red-600">LIVE {dashboard.featuredMatch.minute}'</Badge>
+            <h2 className="text-base font-bold text-[#1E293B]">Match en vedette</h2>
+            {isLive && (
+              <Badge className="bg-[#DC2626] text-white border-0 animate-pulse text-xs font-bold px-2 py-0.5">
+                EN DIRECT
+              </Badge>
+            )}
+            {isFinished && (
+              <span className="text-xs text-[#64748B] font-medium">Terminé</span>
+            )}
           </div>
-          <Link href={`/match/${dashboard.featuredMatch.id}`} className="block">
-            <Card className="bg-gradient-to-br from-primary to-blue-700 text-primary-foreground p-6 shadow-md border-0 active:scale-[0.98] transition-transform">
-              <div className="text-center text-sm font-medium opacity-80 mb-4">{dashboard.featuredMatch.group}</div>
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col items-center gap-2">
-                  <span className="text-4xl">{dashboard.featuredMatch.teamA.flag}</span>
-                  <span className="font-bold text-sm">{dashboard.featuredMatch.teamA.code}</span>
+          <Link href={`/match/${featured.id}`} className="block">
+            <div className="bg-gradient-to-br from-[#2563EB] to-[#1E40AF] rounded-2xl p-6 shadow-lg active:scale-[0.98] transition-transform">
+              <div className="text-center text-xs font-semibold text-white/70 mb-5">
+                Groupe {featured.group} · {featured.stadium ?? ""}
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex flex-col items-center gap-2 flex-1">
+                  <span className="text-5xl">{featured.teamA.flag}</span>
+                  <span className="text-white font-bold text-sm">{featured.teamA.name}</span>
                 </div>
-                <div className="flex items-center justify-center bg-black/20 rounded-lg px-6 py-2">
-                  <span className="text-3xl font-black">{dashboard.featuredMatch.scoreA} - {dashboard.featuredMatch.scoreB}</span>
+                <div className="flex-1 text-center">
+                  {isLive || isFinished ? (
+                    <div className="bg-black/20 rounded-xl px-4 py-3 inline-block">
+                      <span className="text-4xl font-black text-white">
+                        {featured.scoreA} – {featured.scoreB}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="text-white/80 text-xl font-bold">
+                      {format(new Date(featured.datetime), "HH:mm")}
+                    </div>
+                  )}
                 </div>
-                <div className="flex flex-col items-center gap-2">
-                  <span className="text-4xl">{dashboard.featuredMatch.teamB.flag}</span>
-                  <span className="font-bold text-sm">{dashboard.featuredMatch.teamB.code}</span>
+                <div className="flex flex-col items-center gap-2 flex-1">
+                  <span className="text-5xl">{featured.teamB.flag}</span>
+                  <span className="text-white font-bold text-sm">{featured.teamB.name}</span>
                 </div>
               </div>
-            </Card>
+            </div>
           </Link>
         </section>
       )}
 
       {/* My League Strip */}
-      <section>
-        <Link href="/league">
-          <Card className="p-4 flex items-center justify-between bg-white hover:bg-slate-50 transition-colors border-border shadow-sm active:scale-[0.98]">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#FFF7ED] text-[#D97706] flex items-center justify-center">
-                <TrendingUp className="w-5 h-5" />
+      {dashboard.myLeague && (
+        <section>
+          <Link href="/league">
+            <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 flex items-center justify-between shadow-sm active:scale-[0.98] transition-transform hover:bg-[#F8FAFC]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#FFF7ED] flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-[#D97706]" />
+                </div>
+                <div>
+                  <p className="text-xs text-[#64748B] font-medium">Ma ligue · {dashboard.myLeague.name}</p>
+                  <p className="font-bold text-[#1E293B]">
+                    #{dashboard.myLeague.myRank}{" "}
+                    <span className="text-[#64748B] text-sm font-normal">
+                      sur {dashboard.myLeague.memberCount}
+                    </span>
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground font-medium">My League Rank</p>
-                <p className="font-bold text-foreground">#{dashboard.myLeague.myRank} <span className="text-muted-foreground text-sm font-normal">of {dashboard.myLeague.memberCount}</span></p>
+              <div className="flex items-center gap-2">
+                <div className="text-right">
+                  <p className="text-xl font-black text-primary">{dashboard.myLeague.myPoints}</p>
+                  <p className="text-[10px] text-[#64748B] font-semibold uppercase tracking-wider">pts</p>
+                </div>
+                <ChevronRight className="w-4 h-4 text-[#CBD5E1]" />
               </div>
             </div>
-            <div className="text-right flex items-center gap-2">
-              <div>
-                <p className="text-xl font-bold text-primary">{dashboard.myLeague.myPoints}</p>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">PTS</p>
-              </div>
-              <ChevronRight className="w-5 h-5 text-muted-foreground" />
-            </div>
-          </Card>
-        </Link>
-      </section>
+          </Link>
+        </section>
+      )}
+
+      {/* Highlights Reel */}
+      <HighlightsReel />
 
       {/* Today's Matches */}
-      <section>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-bold flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-primary" /> Today's Matches
-          </h2>
-        </div>
-        <div className="space-y-3">
-          {dashboard.todayMatches.map(match => (
-            <Link key={match.id} href={`/match/${match.id}`} className="block">
-              <Card className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors active:scale-[0.98] shadow-sm">
-                <div className="flex items-center gap-4 flex-1">
-                  <div className="flex flex-col items-end gap-1 w-12">
-                    <span className="font-bold">{match.teamA.code}</span>
-                    <span className="font-bold">{match.teamB.code}</span>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <span>{match.teamA.flag}</span>
-                    <span>{match.teamB.flag}</span>
-                  </div>
-                  <div className="flex-1 flex flex-col items-center justify-center">
-                    {match.status === 'upcoming' ? (
-                      <Badge variant="secondary" className="bg-slate-100 text-slate-600 font-medium">
-                        {format(new Date(match.datetime), 'HH:mm')}
-                      </Badge>
-                    ) : (
-                      <div className="flex flex-col gap-1 items-center font-bold text-lg">
-                        <span>{match.scoreA}</span>
-                        <span>{match.scoreB}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </Card>
+      {dashboard.todayMatches.length > 0 && (
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-bold text-[#1E293B] flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-primary" /> Matchs du jour
+            </h2>
+            <Link href="/predictions" className="text-xs text-primary font-semibold">
+              Prédire →
             </Link>
-          ))}
-        </div>
-      </section>
-
+          </div>
+          <div className="space-y-3">
+            {dashboard.todayMatches.map((match) => (
+              <MatchCard key={match.id} match={match} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

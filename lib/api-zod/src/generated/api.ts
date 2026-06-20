@@ -329,3 +329,24 @@ export const GetProfileResponse = zod.object({
 })
 
 
+/**
+ * @summary Get match highlight reels
+ */
+export const GetHighlightsResponseItem = zod.object({
+  "id": zod.string(),
+  "homeTeam": zod.string(),
+  "awayTeam": zod.string(),
+  "homeFlag": zod.string(),
+  "awayFlag": zod.string(),
+  "scoreHome": zod.string().nullish(),
+  "scoreAway": zod.string().nullish(),
+  "date": zod.string(),
+  "group": zod.string(),
+  "status": zod.string(),
+  "videoId": zod.string().nullish(),
+  "thumbnail": zod.string().nullish(),
+  "youtubeUrl": zod.string()
+})
+export const GetHighlightsResponse = zod.array(GetHighlightsResponseItem)
+
+

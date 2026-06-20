@@ -1,54 +1,76 @@
 import { Router } from "express";
-import { db, teamsTable, matchesTable, predictionsTable, leaguesTable, leagueMembersTable } from "@workspace/db";
+import { db, predictionsTable, leaguesTable, leagueMembersTable } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
+import { getEventsByDay, flagEmoji, statusToAppStatus } from "../services/sportsdb";
 
 const router = Router();
 
-function teamShape(t: typeof teamsTable.$inferSelect) {
-  return { id: t.id, name: t.name, code: t.code, flag: t.flag };
+function eventToMatchSummary(ev: Awaited<ReturnType<typeof getEventsByDay>>[0]) {
+  return {
+    id: parseInt(ev.idEvent, 10),
+    teamA: {
+      id: parseInt(ev.idHomeTeam, 10),
+      name: ev.strHomeTeam,
+      code: ev.strHomeTeam.slice(0, 3).toUpperCase(),
+      flag: flagEmoji(ev.strHomeTeam),
+    },
+    teamB: {
+      id: parseInt(ev.idAwayTeam, 10),
+      name: ev.strAwayTeam,
+      code: ev.strAwayTeam.slice(0, 3).toUpperCase(),
+      flag: flagEmoji(ev.strAwayTeam),
+    },
+    scoreA: ev.intHomeScore !== null ? parseInt(ev.intHomeScore, 10) : null,
+    scoreB: ev.intAwayScore !== null ? parseInt(ev.intAwayScore, 10) : null,
+    datetime: ev.strTimestamp
+      ? new Date(ev.strTimestamp).toISOString()
+      : new Date(ev.dateEvent).toISOString(),
+    status: statusToAppStatus(ev.strStatus),
+    group: ev.strGroup ?? "?",
+    minute: null,
+    stadium: ev.strVenue ?? null,
+  };
 }
 
 router.get("/dashboard", async (req, res) => {
   try {
-    const teams = await db.select().from(teamsTable);
-    const teamMap = new Map(teams.map((t) => [t.id, t]));
+    const todayStr = new Date().toISOString().split("T")[0];
+    const todayEvents = await getEventsByDay(todayStr);
 
-    const allMatches = await db.select().from(matchesTable);
-    const featured = allMatches.find((m) => m.status === "live") ??
-      allMatches.find((m) => m.status === "upcoming") ??
-      allMatches[0];
+    const todayMatches = todayEvents.map(eventToMatchSummary);
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    const featured =
+      todayMatches.find((m) => m.status === "live") ??
+      todayMatches.find((m) => m.status === "upcoming") ??
+      todayMatches[0] ??
+      null;
 
-    const todayMatches = allMatches.filter(
-      (m) => m.datetime >= today && m.datetime < tomorrow
-    );
+    // User predictions from our DB
+    const preds = await db
+      .select()
+      .from(predictionsTable)
+      .orderBy(desc(predictionsTable.createdAt))
+      .limit(3);
 
-    const preds = await db.select().from(predictionsTable).orderBy(desc(predictionsTable.createdAt)).limit(3);
-    const allMatchMap = new Map(allMatches.map((m) => [m.id, m]));
-
-    const predShaped = preds.map((p) => {
-      const match = allMatchMap.get(p.matchId)!;
-      return {
-        id: p.id,
-        matchId: p.matchId,
-        teamA: teamShape(teamMap.get(match.teamAId)!),
-        teamB: teamShape(teamMap.get(match.teamBId)!),
-        predictedScoreA: p.predictedScoreA,
-        predictedScoreB: p.predictedScoreB,
-        pointsEarned: p.pointsEarned,
-        status: p.status,
-      };
-    });
+    const predShaped = preds.map((p) => ({
+      id: p.id,
+      matchId: p.matchId,
+      teamA: { id: 0, name: "Team A", code: "TEA", flag: "🏳️" },
+      teamB: { id: 0, name: "Team B", code: "TEB", flag: "🏳️" },
+      predictedScoreA: p.predictedScoreA,
+      predictedScoreB: p.predictedScoreB,
+      pointsEarned: p.pointsEarned,
+      status: p.status,
+    }));
 
     const leagues = await db.select().from(leaguesTable).limit(1);
     const league = leagues[0];
     let leagueSummary = null;
     if (league) {
-      const members = await db.select().from(leagueMembersTable).where(eq(leagueMembersTable.leagueId, league.id));
+      const members = await db
+        .select()
+        .from(leagueMembersTable)
+        .where(eq(leagueMembersTable.leagueId, league.id));
       const me = members.find((m) => m.isCurrentUser);
       leagueSummary = {
         id: league.id,
@@ -60,22 +82,9 @@ router.get("/dashboard", async (req, res) => {
       };
     }
 
-    const matchShape = (m: typeof matchesTable.$inferSelect) => ({
-      id: m.id,
-      teamA: teamShape(teamMap.get(m.teamAId)!),
-      teamB: teamShape(teamMap.get(m.teamBId)!),
-      scoreA: m.scoreA,
-      scoreB: m.scoreB,
-      datetime: m.datetime.toISOString(),
-      status: m.status,
-      group: m.group,
-      minute: m.minute,
-      stadium: m.stadium,
-    });
-
     res.json({
-      featuredMatch: featured ? matchShape(featured) : null,
-      todayMatches: todayMatches.map(matchShape),
+      featuredMatch: featured,
+      todayMatches,
       myPredictions: predShaped,
       myLeague: leagueSummary,
     });
