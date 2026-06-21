@@ -6,7 +6,7 @@ import { publishableKeyFromHost } from "@clerk/react/internal";
 import { shadcn } from "@clerk/themes";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { MobileLayout } from "@/components/MobileLayout";
+import { AppLayout } from "@/components/AppLayout";
 import Dashboard from "@/pages/Dashboard";
 import MatchCenter from "@/pages/MatchCenter";
 import Standings from "@/pages/Standings";
@@ -189,7 +189,7 @@ function AppWithNotifications({ children }: { children: React.ReactNode }) {
 function Router() {
   return (
     <AppWithNotifications>
-      <MobileLayout>
+      <AppLayout>
         <Switch>
           <Route path="/" component={Dashboard} />
           <Route path="/match/:id" component={MatchCenter} />
@@ -199,7 +199,7 @@ function Router() {
           <Route path="/profile" component={Profile} />
           <Route component={NotFound} />
         </Switch>
-      </MobileLayout>
+      </AppLayout>
     </AppWithNotifications>
   );
 }

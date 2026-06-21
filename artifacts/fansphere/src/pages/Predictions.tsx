@@ -21,13 +21,7 @@ const statusConfig = {
   pending: { icon: Clock, color: "text-[#64748B]", bg: "bg-[#F8FAFC]", label: "En attente" },
 };
 
-function ScoreInput({
-  value,
-  onChange,
-}: {
-  value: number;
-  onChange: (v: number) => void;
-}) {
+function ScoreInput({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   return (
     <div className="flex items-center gap-2">
       <button
@@ -79,8 +73,7 @@ export default function Predictions() {
   const predictionHistory = predictions ?? [];
   const results = predictionHistory.filter((p) => p.status !== "pending");
 
-  const getScore = (matchId: number, team: "a" | "b") =>
-    scores[matchId]?.[team] ?? 0;
+  const getScore = (matchId: number, team: "a" | "b") => scores[matchId]?.[team] ?? 0;
 
   const handleSubmit = async (matchId: number) => {
     setSubmitting(matchId);
@@ -92,22 +85,21 @@ export default function Predictions() {
           predictedScoreB: getScore(matchId, "b"),
         },
       },
-      {
-        onSettled: () => setSubmitting(null),
-      }
+      { onSettled: () => setSubmitting(null) }
     );
   };
 
   const tabs: { id: TabType; label: string }[] = [
-    { id: "predict", label: "A prédire" },
+    { id: "predict", label: "À prédire" },
     { id: "history", label: "Historique" },
     { id: "results", label: "Résultats" },
   ];
 
   return (
-    <div className="flex flex-col min-h-full bg-slate-50" data-testid="predictions-page">
-      {/* Header */}
-      <div className="bg-white px-4 pt-12 pb-0 border-b border-[#E2E8F0]">
+    <div className="flex flex-col min-h-full bg-slate-50 md:bg-transparent" data-testid="predictions-page">
+
+      {/* ── Mobile header ── */}
+      <div className="md:hidden bg-white px-4 pt-12 pb-0 border-b border-[#E2E8F0]">
         <h1 className="text-xl font-bold text-[#1E293B] mb-4">Prédictions</h1>
         <div className="flex gap-0">
           {tabs.map((tab) => (
@@ -116,9 +108,7 @@ export default function Predictions() {
               onClick={() => setActiveTab(tab.id)}
               data-testid={`tab-${tab.id}`}
               className={`flex-1 py-2.5 text-sm font-semibold border-b-2 transition-all ${
-                activeTab === tab.id
-                  ? "text-primary border-primary"
-                  : "text-[#64748B] border-transparent"
+                activeTab === tab.id ? "text-primary border-primary" : "text-[#64748B] border-transparent"
               }`}
             >
               {tab.label}
@@ -127,72 +117,88 @@ export default function Predictions() {
         </div>
       </div>
 
-      <div className="flex-1 p-4 space-y-3">
+      {/* ── Desktop header ── */}
+      <div className="hidden md:flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-black text-[#1E293B]">Prédictions</h1>
+        <div className="flex gap-1 bg-[#F1F5F9] rounded-xl p-1">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              data-testid={`tab-${tab.id}`}
+              className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
+                activeTab === tab.id
+                  ? "bg-white text-[#1E293B] shadow-sm"
+                  : "text-[#64748B] hover:text-[#1E293B]"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Content ── */}
+      <div className="flex-1 p-4 md:p-0 space-y-3">
         {/* PREDICT TAB */}
         {activeTab === "predict" && (
           <>
             {loadingMatches ? (
-              [1, 2, 3].map((i) => <Skeleton key={i} className="h-32 w-full rounded-xl" />)
+              <div className="md:grid md:grid-cols-2 md:gap-4 space-y-3 md:space-y-0">
+                {[1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-40 w-full rounded-xl" />)}
+              </div>
             ) : upcomingMatches.length === 0 ? (
               <div className="text-center py-12 text-[#64748B] text-sm">
                 Aucun match à prédire pour l'instant
               </div>
             ) : (
-              upcomingMatches.map((match) => (
-                <div
-                  key={match.id}
-                  className="bg-white rounded-xl border border-[#E2E8F0] p-4"
-                  data-testid={`predict-card-${match.id}`}
-                >
-                  <div className="text-xs text-[#64748B] mb-3">
-                    {match.teamA.name} vs {match.teamB.name} ·{" "}
-                    {format(new Date(match.datetime), "HH:mm", { locale: fr })} · Groupe {match.group}
-                  </div>
-
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2 flex-1">
-                      <span className="text-3xl">{match.teamA.flag}</span>
-                      <span className="text-sm font-bold text-[#1E293B]">{match.teamA.code}</span>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <ScoreInput
-                        value={getScore(match.id, "a")}
-                        onChange={(v) =>
-                          setScores((s) => ({
-                            ...s,
-                            [match.id]: { a: v, b: getScore(match.id, "b") },
-                          }))
-                        }
-                      />
-                      <Minus className="w-4 h-4 text-[#CBD5E1]" />
-                      <ScoreInput
-                        value={getScore(match.id, "b")}
-                        onChange={(v) =>
-                          setScores((s) => ({
-                            ...s,
-                            [match.id]: { a: getScore(match.id, "a"), b: v },
-                          }))
-                        }
-                      />
-                    </div>
-
-                    <div className="flex items-center gap-2 flex-1 justify-end">
-                      <span className="text-sm font-bold text-[#1E293B]">{match.teamB.code}</span>
-                      <span className="text-3xl">{match.teamB.flag}</span>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => handleSubmit(match.id)}
-                    disabled={submitting === match.id}
-                    data-testid={`button-confirm-${match.id}`}
-                    className="w-full py-2.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 active:scale-[0.99]"
+              <div className="md:grid md:grid-cols-2 md:gap-4 space-y-3 md:space-y-0">
+                {upcomingMatches.map((match) => (
+                  <div
+                    key={match.id}
+                    className="bg-white rounded-xl border border-[#E2E8F0] p-4"
+                    data-testid={`predict-card-${match.id}`}
                   >
-                    {submitting === match.id ? "Confirmation..." : "Confirmer ma prédiction"}
-                  </button>
-                </div>
-              ))
+                    <div className="text-xs text-[#64748B] mb-3">
+                      {match.teamA.name} vs {match.teamB.name} ·{" "}
+                      {format(new Date(match.datetime), "HH:mm", { locale: fr })} · Groupe {match.group}
+                    </div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2 flex-1">
+                        <span className="text-3xl">{match.teamA.flag}</span>
+                        <span className="text-sm font-bold text-[#1E293B]">{match.teamA.code}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <ScoreInput
+                          value={getScore(match.id, "a")}
+                          onChange={(v) =>
+                            setScores((s) => ({ ...s, [match.id]: { a: v, b: getScore(match.id, "b") } }))
+                          }
+                        />
+                        <Minus className="w-4 h-4 text-[#CBD5E1]" />
+                        <ScoreInput
+                          value={getScore(match.id, "b")}
+                          onChange={(v) =>
+                            setScores((s) => ({ ...s, [match.id]: { a: getScore(match.id, "a"), b: v } }))
+                          }
+                        />
+                      </div>
+                      <div className="flex items-center gap-2 flex-1 justify-end">
+                        <span className="text-sm font-bold text-[#1E293B]">{match.teamB.code}</span>
+                        <span className="text-3xl">{match.teamB.flag}</span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => handleSubmit(match.id)}
+                      disabled={submitting === match.id}
+                      data-testid={`button-confirm-${match.id}`}
+                      className="w-full py-2.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 active:scale-[0.99]"
+                    >
+                      {submitting === match.id ? "Confirmation..." : "Confirmer ma prédiction"}
+                    </button>
+                  </div>
+                ))}
+              </div>
             )}
           </>
         )}
@@ -203,9 +209,7 @@ export default function Predictions() {
             {loadingPredictions ? (
               [1, 2, 3].map((i) => <Skeleton key={i} className="h-16 w-full rounded-xl" />)
             ) : predictionHistory.length === 0 ? (
-              <div className="text-center py-12 text-[#64748B] text-sm">
-                Aucune prédiction enregistrée
-              </div>
+              <div className="text-center py-12 text-[#64748B] text-sm">Aucune prédiction enregistrée</div>
             ) : (
               <div className="bg-white rounded-xl border border-[#E2E8F0] overflow-hidden">
                 {predictionHistory.map((pred, i) => {
@@ -240,9 +244,7 @@ export default function Predictions() {
         {activeTab === "results" && (
           <>
             {results.length === 0 ? (
-              <div className="text-center py-12 text-[#64748B] text-sm">
-                Aucun résultat disponible
-              </div>
+              <div className="text-center py-12 text-[#64748B] text-sm">Aucun résultat disponible</div>
             ) : (
               <div className="bg-white rounded-xl border border-[#E2E8F0] overflow-hidden">
                 {results.map((pred, i) => {
