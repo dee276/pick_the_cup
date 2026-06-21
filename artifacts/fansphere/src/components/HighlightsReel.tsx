@@ -1,7 +1,17 @@
 import { useState } from "react";
 import { useGetHighlights, getGetHighlightsQueryKey } from "@workspace/api-client-react";
-import { Play, X, ExternalLink } from "lucide-react";
+import { Play, X } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+
+function extractYoutubeId(url: string): string | null {
+  try {
+    const u = new URL(url);
+    if (u.hostname === "youtu.be") return u.pathname.slice(1).split("?")[0];
+    if (u.hostname.includes("youtube.com")) return u.searchParams.get("v");
+  } catch {}
+  const m = url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
 
 function VideoModal({ videoId, title, onClose }: { videoId: string; title: string; onClose: () => void }) {
   return (
@@ -43,7 +53,6 @@ function HighlightCard({
   title: string;
   onClick: () => void;
 }) {
-  const hasEmbed = !!h.videoId;
   return (
     <div
       className="rounded-xl overflow-hidden border border-[#E2E8F0] bg-white shadow-sm active:scale-[0.97] transition-transform cursor-pointer"
@@ -64,21 +73,15 @@ function HighlightCard({
         ) : null}
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
           <div className="w-9 h-9 md:w-11 md:h-11 rounded-full bg-white/90 flex items-center justify-center">
-            {hasEmbed ? (
-              <Play className="w-4 h-4 md:w-5 md:h-5 text-[#DC2626] fill-[#DC2626] ml-0.5" />
-            ) : (
-              <ExternalLink className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#1E293B]" />
-            )}
+            <Play className="w-4 h-4 md:w-5 md:h-5 text-[#DC2626] fill-[#DC2626] ml-0.5" />
           </div>
         </div>
         <span className="absolute top-2 left-2 text-[9px] font-bold bg-black/50 text-white px-1.5 py-0.5 rounded">
           {h.group}
         </span>
-        {hasEmbed && (
-          <span className="absolute top-2 right-2 text-[9px] font-bold bg-[#DC2626] text-white px-1.5 py-0.5 rounded">
-            ▶ YT
-          </span>
-        )}
+        <span className="absolute top-2 right-2 text-[9px] font-bold bg-[#DC2626] text-white px-1.5 py-0.5 rounded">
+          ▶ YT
+        </span>
       </div>
 
       {/* Match info */}
@@ -144,35 +147,33 @@ export function HighlightsReel() {
 
         {/* Mobile: horizontal scroll */}
         <div className="md:hidden flex gap-3 overflow-x-auto pb-1 scrollbar-hide -mx-4 px-4">
-          {highlights.map((h) => (
-            <div key={h.id} className="flex-shrink-0 w-44">
-              <HighlightCard
-                h={h}
-                title={title(h)}
-                onClick={() =>
-                  h.videoId
-                    ? setActiveVideo({ id: h.videoId, title: title(h) })
-                    : window.open(h.youtubeUrl, "_blank", "noopener")
-                }
-              />
-            </div>
-          ))}
+          {highlights.map((h) => {
+            const vid = h.videoId ?? extractYoutubeId(h.youtubeUrl);
+            return (
+              <div key={h.id} className="flex-shrink-0 w-44">
+                <HighlightCard
+                  h={h}
+                  title={title(h)}
+                  onClick={() => vid && setActiveVideo({ id: vid, title: title(h) })}
+                />
+              </div>
+            );
+          })}
         </div>
 
         {/* Desktop: grid */}
         <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-3">
-          {highlights.map((h) => (
-            <HighlightCard
-              key={h.id}
-              h={h}
-              title={title(h)}
-              onClick={() =>
-                h.videoId
-                  ? setActiveVideo({ id: h.videoId, title: title(h) })
-                  : window.open(h.youtubeUrl, "_blank", "noopener")
-              }
-            />
-          ))}
+          {highlights.map((h) => {
+            const vid = h.videoId ?? extractYoutubeId(h.youtubeUrl);
+            return (
+              <HighlightCard
+                key={h.id}
+                h={h}
+                title={title(h)}
+                onClick={() => vid && setActiveVideo({ id: vid, title: title(h) })}
+              />
+            );
+          })}
         </div>
       </section>
 
