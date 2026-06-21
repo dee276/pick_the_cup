@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
   <rect width="120" height="120" rx="28" fill="#2563EB"/>
-  <circle cx="60" cy="58" r="28" fill="white" fill-opacity="0.15" stroke="white" stroke-width="2.5"/>
-  <path d="M60 34 L66 50 H84 L70 60 L76 76 L60 66 L44 76 L50 60 L36 50 H54 Z" fill="white" fill-opacity="0.9"/>
-  <text x="60" y="106" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing="1">FANSPHERE</text>
+  <circle cx="60" cy="54" r="26" fill="white" fill-opacity="0.15" stroke="white" stroke-width="2.5"/>
+  <path d="M60 32 L65.5 48 H82 L69 57.5 L74.5 74 L60 64.5 L45.5 74 L51 57.5 L38 48 H54.5 Z" fill="white" fill-opacity="0.95"/>
+  <text x="60" y="104" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="800" fill="white" letter-spacing="0.5">PICKTHECUP</text>
 </svg>

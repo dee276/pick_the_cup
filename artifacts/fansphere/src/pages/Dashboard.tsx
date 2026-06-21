@@ -89,7 +89,7 @@ export default function Dashboard() {
     <div className="p-4 space-y-6 pt-10">
       {/* Header */}
       <header>
-        <h1 className="text-2xl font-black text-[#1E293B]">FanSphere ⚽</h1>
+        <h1 className="text-2xl font-black text-[#1E293B]">PickTheCup 🏆</h1>
         <p className="text-[#64748B] text-sm mt-0.5">Coupe du Monde 2026 · Données officielles</p>
       </header>
 

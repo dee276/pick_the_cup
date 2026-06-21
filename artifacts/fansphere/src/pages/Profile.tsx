@@ -157,8 +157,8 @@ function SignedOutProfile() {
           <span className="text-4xl">⚽</span>
         </div>
         <div className="text-center">
-          <h2 className="text-lg font-bold text-[#1E293B] mb-1">Rejoignez FanSphere</h2>
-          <p className="text-sm text-[#64748B]">Créez votre compte pour sauvegarder vos prédictions, rejoindre des ligues privées et recevoir des alertes en direct.</p>
+          <h2 className="text-lg font-bold text-[#1E293B] mb-1">Rejoignez PickTheCup</h2>
+          <p className="text-sm text-[#64748B]">Créez votre compte pour sauvegarder vos pronostics, rejoindre des ligues privées et recevoir des alertes en direct.</p>
         </div>
         <div className="flex flex-col gap-3 w-full max-w-xs">
           <button

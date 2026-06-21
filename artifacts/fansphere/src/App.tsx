@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
-import { Switch, Route, Router as WouterRouter, useLocation, Redirect } from "wouter";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
-import { ClerkProvider, SignIn, SignUp, Show, useClerk } from "@clerk/react";
+import { ClerkProvider, SignIn, SignUp, useClerk, useUser } from "@clerk/react";
 import { publishableKeyFromHost } from "@clerk/react/internal";
 import { shadcn } from "@clerk/themes";
 import { Toaster } from "@/components/ui/toaster";
@@ -15,6 +15,7 @@ import League from "@/pages/League";
 import Profile from "@/pages/Profile";
 import NotFound from "@/pages/not-found";
 import { useNotifications } from "@/hooks/useNotifications";
+import { OnboardingModal } from "@/components/OnboardingModal";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -137,9 +138,52 @@ function ClerkQueryClientCacheInvalidator() {
   return null;
 }
 
+function useOnboarding() {
+  const { user, isLoaded, isSignedIn } = useUser();
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const checkedRef = useRef(false);
+
+  const check = useCallback(async () => {
+    if (!isSignedIn || !user || checkedRef.current) return;
+    const key = `ptc_onboarded_${user.id}`;
+    if (localStorage.getItem(key)) return;
+    checkedRef.current = true;
+    try {
+      const res = await fetch(`${basePath}/api/preferences`, { credentials: "include" });
+      if (res.ok) {
+        const data = await res.json();
+        if ((data.favoriteTeams?.length ?? 0) === 0 && (data.totalInteractions ?? 0) === 0) {
+          setShowOnboarding(true);
+        } else {
+          localStorage.setItem(key, "1");
+        }
+      }
+    } catch {
+      checkedRef.current = false;
+    }
+  }, [isSignedIn, user]);
+
+  useEffect(() => {
+    if (isLoaded) check();
+  }, [isLoaded, check]);
+
+  const dismiss = useCallback(() => {
+    if (user) localStorage.setItem(`ptc_onboarded_${user.id}`, "1");
+    setShowOnboarding(false);
+  }, [user]);
+
+  return { showOnboarding, dismiss };
+}
+
 function AppWithNotifications({ children }: { children: React.ReactNode }) {
   useNotifications(true);
-  return <>{children}</>;
+  const { showOnboarding, dismiss } = useOnboarding();
+  return (
+    <>
+      {children}
+      {showOnboarding && <OnboardingModal onDone={dismiss} />}
+    </>
+  );
 }
 
 function Router() {
@@ -173,13 +217,13 @@ function ClerkProviderWithRoutes() {
       localization={{
         signIn: {
           start: {
-            title: "Bienvenue sur FanSphere",
+            title: "Bienvenue sur PickTheCup",
             subtitle: "Connectez-vous pour accéder à votre compte",
           },
         },
         signUp: {
           start: {
-            title: "Rejoignez FanSphere",
+            title: "Rejoignez PickTheCup",
             subtitle: "Suivez la Coupe du Monde 2026 comme un vrai fan",
           },
         },
