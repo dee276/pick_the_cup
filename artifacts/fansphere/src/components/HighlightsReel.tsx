@@ -1,44 +1,102 @@
 import { useState } from "react";
 import { useGetHighlights, getGetHighlightsQueryKey } from "@workspace/api-client-react";
-import { Play, X } from "lucide-react";
+import { Play, X, ExternalLink, Youtube } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-function extractYoutubeId(url: string): string | null {
-  try {
-    const u = new URL(url);
-    if (u.hostname === "youtu.be") return u.pathname.slice(1).split("?")[0];
-    if (u.hostname.includes("youtube.com")) return u.searchParams.get("v");
-  } catch {}
-  const m = url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-  return m ? m[1] : null;
+interface VideoInfo {
+  videoId: string | null;
+  youtubeUrl: string;
+  title: string;
+  thumbnail: string | null;
 }
 
-function VideoModal({ videoId, title, onClose }: { videoId: string; title: string; onClose: () => void }) {
+function VideoModal({ info, onClose }: { info: VideoInfo; onClose: () => void }) {
+  const [showEmbed, setShowEmbed] = useState(false);
+  const { videoId, youtubeUrl, title, thumbnail } = info;
+
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center"
+      className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
       onClick={onClose}
       data-testid="video-modal"
     >
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
-        data-testid="button-close-video"
-      >
-        <X className="w-5 h-5 text-white" />
-      </button>
-      <p className="text-white text-sm font-medium mb-3 px-4 text-center">{title}</p>
       <div
-        className="w-full max-w-2xl aspect-video px-4"
+        className="w-full max-w-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <iframe
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
-          className="w-full h-full rounded-xl"
-          allow="autoplay; encrypted-media"
-          allowFullScreen
-          title={title}
-        />
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+          data-testid="button-close-video"
+        >
+          <X className="w-5 h-5 text-white" />
+        </button>
+
+        {showEmbed && videoId ? (
+          /* ── Embedded player (only if user tapped "Lire dans l'app") ── */
+          <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`}
+              className="w-full h-full"
+              allow="autoplay; encrypted-media; fullscreen"
+              allowFullScreen
+              title={title}
+            />
+          </div>
+        ) : (
+          /* ── Preview card ── */
+          <div className="bg-[#0F172A] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+            {/* Thumbnail */}
+            <div className="relative aspect-video bg-gradient-to-br from-[#1E3A5F] to-[#2563EB]">
+              {thumbnail && (
+                <img
+                  src={thumbnail}
+                  alt={title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                />
+              )}
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <div className="w-16 h-16 rounded-full bg-white/10 border-2 border-white/30 flex items-center justify-center">
+                  <Play className="w-7 h-7 text-white fill-white ml-1" />
+                </div>
+              </div>
+            </div>
+
+            {/* Info + actions */}
+            <div className="p-5 space-y-3">
+              <p className="text-white font-semibold text-sm leading-snug">{title}</p>
+
+              {/* Try in-app (only if we have a known videoId) */}
+              {videoId && (
+                <button
+                  onClick={() => setShowEmbed(true)}
+                  className="w-full flex items-center justify-center gap-2 py-3 bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold rounded-xl transition-colors"
+                >
+                  <Play className="w-4 h-4 fill-white" />
+                  Lire dans l'app
+                </button>
+              )}
+
+              {/* Open on YouTube */}
+              <a
+                href={youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-2 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-colors"
+              >
+                <Youtube className="w-4 h-4" />
+                {youtubeUrl.includes("results?") ? "Rechercher sur YouTube" : "Voir sur YouTube"}
+                <ExternalLink className="w-3.5 h-3.5 opacity-60" />
+              </a>
+
+              <p className="text-white/40 text-xs text-center">
+                Certaines vidéos sont protégées par leurs ayants droit
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -106,14 +164,22 @@ function HighlightCard({
 }
 
 export function HighlightsReel() {
-  const [activeVideo, setActiveVideo] = useState<{ id: string; title: string } | null>(null);
+  const [activeVideo, setActiveVideo] = useState<VideoInfo | null>(null);
 
   const { data: highlights, isLoading } = useGetHighlights({
     query: { queryKey: getGetHighlightsQueryKey(), staleTime: 120_000 },
   });
 
-  const title = (h: NonNullable<typeof highlights>[0]) =>
+  const matchTitle = (h: NonNullable<typeof highlights>[0]) =>
     `${h.homeFlag} ${h.homeTeam} ${h.scoreHome ?? "?"} – ${h.scoreAway ?? "?"} ${h.awayTeam} ${h.awayFlag}`;
+
+  const openVideo = (h: NonNullable<typeof highlights>[0]) =>
+    setActiveVideo({
+      videoId: h.videoId ?? null,
+      youtubeUrl: h.youtubeUrl,
+      title: matchTitle(h),
+      thumbnail: h.thumbnail ?? null,
+    });
 
   if (isLoading) {
     return (
@@ -147,40 +213,33 @@ export function HighlightsReel() {
 
         {/* Mobile: horizontal scroll */}
         <div className="md:hidden flex gap-3 overflow-x-auto pb-1 scrollbar-hide -mx-4 px-4">
-          {highlights.map((h) => {
-            const vid = h.videoId ?? extractYoutubeId(h.youtubeUrl);
-            return (
-              <div key={h.id} className="flex-shrink-0 w-44">
-                <HighlightCard
-                  h={h}
-                  title={title(h)}
-                  onClick={() => vid && setActiveVideo({ id: vid, title: title(h) })}
-                />
-              </div>
-            );
-          })}
+          {highlights.map((h) => (
+            <div key={h.id} className="flex-shrink-0 w-44">
+              <HighlightCard
+                h={h}
+                title={matchTitle(h)}
+                onClick={() => openVideo(h)}
+              />
+            </div>
+          ))}
         </div>
 
         {/* Desktop: grid */}
         <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-3">
-          {highlights.map((h) => {
-            const vid = h.videoId ?? extractYoutubeId(h.youtubeUrl);
-            return (
-              <HighlightCard
-                key={h.id}
-                h={h}
-                title={title(h)}
-                onClick={() => vid && setActiveVideo({ id: vid, title: title(h) })}
-              />
-            );
-          })}
+          {highlights.map((h) => (
+            <HighlightCard
+              key={h.id}
+              h={h}
+              title={matchTitle(h)}
+              onClick={() => openVideo(h)}
+            />
+          ))}
         </div>
       </section>
 
       {activeVideo && (
         <VideoModal
-          videoId={activeVideo.id}
-          title={activeVideo.title}
+          info={activeVideo}
           onClose={() => setActiveVideo(null)}
         />
       )}
