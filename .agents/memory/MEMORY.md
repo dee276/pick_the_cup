@@ -1,0 +1,3 @@
+- [Clerk Auth setup](clerk-auth-setup.md) — Clerk provisioned (not_configured → managed); web-only, cookie auth, no bearer tokens needed.
+- [TheSportsDB integration](sportsdb-integration.md) — Free tier, WC 2026 league ID 4429; cache 60s; rate-limit safe with delay between calls.
+- [SSE live notifications](sse-notifications.md) — /api/events/stream, 30s polling, broadcasts goal/match_started/match_ended events.

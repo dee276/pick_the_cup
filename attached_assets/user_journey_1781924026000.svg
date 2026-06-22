@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="Arial, sans-serif">
+  <rect width="900" height="480" fill="#0F172A"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#FFFFFF">User Journey Map — Alexandre Tremblay</text>
+
+  
+  <rect x="10" y="45" width="112" height="32" rx="6" fill="#1E293B"/>
+  <text x="66" y="65" text-anchor="middle" font-size="10" font-weight="bold" fill="#94A3B8">PHASE</text>
+  
+  <rect x="128" y="45" width="110" height="32" rx="6" fill="#1E293B"/>
+  <text x="183" y="65" text-anchor="middle" font-size="10" font-weight="bold" fill="#94A3B8">ACTIONS</text>
+
+  <rect x="244" y="45" width="110" height="32" rx="6" fill="#1E293B"/>
+  <text x="299" y="65" text-anchor="middle" font-size="10" font-weight="bold" fill="#94A3B8">PENSÉES</text>
+
+  <rect x="360" y="45" width="68" height="32" rx="6" fill="#1E293B"/>
+  <text x="394" y="65" text-anchor="middle" font-size="10" font-weight="bold" fill="#94A3B8">ÉMOTION</text>
+
+  <rect x="434" y="45" width="120" height="32" rx="6" fill="#1E293B"/>
+  <text x="494" y="65" text-anchor="middle" font-size="10" font-weight="bold" fill="#94A3B8">FRICTIONS</text>
+
+  <rect x="560" y="45" width="150" height="32" rx="6" fill="#1E293B"/>
+  <text x="635" y="65" text-anchor="middle" font-size="10" font-weight="bold" fill="#94A3B8">OPPORTUNITÉS</text>
+
+  
+  
+  <rect x="10" y="82" width="112" height="52" rx="4" fill="#1E3A5F"/>
+  <text x="66" y="112" text-anchor="middle" font-size="10" font-weight="bold" fill="#60A5FA">Anticipation</text>
+
+  <rect x="128" y="82" width="110" height="52" rx="4" fill="#1E293B"/>
+  <text x="183" y="105" text-anchor="middle" font-size="9" fill="#CBD5E1">Vérifie les</text>
+  <text x="183" y="119" text-anchor="middle" font-size="9" fill="#CBD5E1">prochains matchs</text>
+
+  <rect x="244" y="82" width="110" height="52" rx="4" fill="#1E293B"/>
+  <text x="299" y="105" text-anchor="middle" font-size="9" fill="#CBD5E1">Quand joue</text>
+  <text x="299" y="119" text-anchor="middle" font-size="9" fill="#CBD5E1">mon équipe ?</text>
+
+  <rect x="360" y="82" width="68" height="52" rx="4" fill="#1E293B"/>
+  <text x="394" y="112" text-anchor="middle" font-size="13" fill="#FBBF24">★★★☆☆</text>
+
+  <rect x="434" y="82" width="120" height="52" rx="4" fill="#1E293B"/>
+  <text x="494" y="105" text-anchor="middle" font-size="9" fill="#F87171">Horaires</text>
+  <text x="494" y="119" text-anchor="middle" font-size="9" fill="#F87171">dispersés</text>
+
+  <rect x="560" y="82" width="150" height="52" rx="4" fill="#1E293B"/>
+  <text x="635" y="105" text-anchor="middle" font-size="9" fill="#4ADE80">Calendrier</text>
+  <text x="635" y="119" text-anchor="middle" font-size="9" fill="#4ADE80">personnalisé</text>
+
+  
+  <rect x="10" y="139" width="112" height="52" rx="4" fill="#1E3A5F"/>
+  <text x="66" y="169" text-anchor="middle" font-size="10" font-weight="bold" fill="#60A5FA">Préparation</text>
+
+  <rect x="128" y="139" width="110" height="52" rx="4" fill="#172032"/>
+  <text x="183" y="162" text-anchor="middle" font-size="9" fill="#CBD5E1">Consulte stats</text>
+  <text x="183" y="176" text-anchor="middle" font-size="9" fill="#CBD5E1">et classements</text>
+
+  <rect x="244" y="139" width="110" height="52" rx="4" fill="#172032"/>
+  <text x="299" y="169" text-anchor="middle" font-size="9" fill="#CBD5E1">Qui est favori ?</text>
+
+  <rect x="360" y="139" width="68" height="52" rx="4" fill="#172032"/>
+  <text x="394" y="169" text-anchor="middle" font-size="13" fill="#FBBF24">★★★★☆</text>
+
+  <rect x="434" y="139" width="120" height="52" rx="4" fill="#172032"/>
+  <text x="494" y="162" text-anchor="middle" font-size="9" fill="#F87171">Sources</text>
+  <text x="494" y="176" text-anchor="middle" font-size="9" fill="#F87171">multiples</text>
+
+  <rect x="560" y="139" width="150" height="52" rx="4" fill="#172032"/>
+  <text x="635" y="162" text-anchor="middle" font-size="9" fill="#4ADE80">Fiche de match</text>
+  <text x="635" y="176" text-anchor="middle" font-size="9" fill="#4ADE80">centralisée</text>
+
+  
+  <rect x="10" y="196" width="112" height="52" rx="4" fill="#1E3A5F"/>
+  <text x="66" y="226" text-anchor="middle" font-size="10" font-weight="bold" fill="#60A5FA">Prédiction</text>
+
+  <rect x="128" y="196" width="110" height="52" rx="4" fill="#1E293B"/>
+  <text x="183" y="219" text-anchor="middle" font-size="9" fill="#CBD5E1">Soumet son</text>
+  <text x="183" y="233" text-anchor="middle" font-size="9" fill="#CBD5E1">score prédit</text>
+
+  <rect x="244" y="196" width="110" height="52" rx="4" fill="#1E293B"/>
+  <text x="299" y="219" text-anchor="middle" font-size="9" fill="#CBD5E1">J'espère gagner</text>
+  <text x="299" y="233" text-anchor="middle" font-size="9" fill="#CBD5E1">des points</text>
+
+  <rect x="360" y="196" width="68" height="52" rx="4" fill="#1E293B"/>
+  <text x="394" y="226" text-anchor="middle" font-size="13" fill="#FBBF24">★★★★★</text>
+
+  <rect x="434" y="196" width="120" height="52" rx="4" fill="#1E293B"/>
+  <text x="494" y="219" text-anchor="middle" font-size="9" fill="#F87171">Manque de</text>
+  <text x="494" y="233" text-anchor="middle" font-size="9" fill="#F87171">contexte</text>
+
+  <rect x="560" y="196" width="150" height="52" rx="4" fill="#1E293B"/>
+  <text x="635" y="219" text-anchor="middle" font-size="9" fill="#4ADE80">Comparaison</text>
+  <text x="635" y="233" text-anchor="middle" font-size="9" fill="#4ADE80">des prédictions</text>
+
+  
+  <rect x="10" y="253" width="112" height="52" rx="4" fill="#1E3A5F"/>
+  <text x="66" y="283" text-anchor="middle" font-size="10" font-weight="bold" fill="#60A5FA">Suivi</text>
+
+  <rect x="128" y="253" width="110" height="52" rx="4" fill="#172032"/>
+  <text x="183" y="276" text-anchor="middle" font-size="9" fill="#CBD5E1">Scores en direct</text>
+
+  <rect x="244" y="253" width="110" height="52" rx="4" fill="#172032"/>
+  <text x="299" y="276" text-anchor="middle" font-size="9" fill="#CBD5E1">Mon équipe</text>
+  <text x="299" y="290" text-anchor="middle" font-size="9" fill="#CBD5E1">va-t-elle gagner ?</text>
+
+  <rect x="360" y="253" width="68" height="52" rx="4" fill="#172032"/>
+  <text x="394" y="283" text-anchor="middle" font-size="13" fill="#FBBF24">★★★★★</text>
+
+  <rect x="434" y="253" width="120" height="52" rx="4" fill="#172032"/>
+  <text x="494" y="276" text-anchor="middle" font-size="9" fill="#F87171">Notifications</text>
+  <text x="494" y="290" text-anchor="middle" font-size="9" fill="#F87171">excessives</text>
+
+  <rect x="560" y="253" width="150" height="52" rx="4" fill="#172032"/>
+  <text x="635" y="276" text-anchor="middle" font-size="9" fill="#4ADE80">Alertes</text>
+  <text x="635" y="290" text-anchor="middle" font-size="9" fill="#4ADE80">intelligentes</text>
+
+  
+  <rect x="10" y="310" width="112" height="52" rx="4" fill="#3B1A1A"/>
+  <text x="66" y="333" text-anchor="middle" font-size="10" font-weight="bold" fill="#F87171">Conséquences</text>
+  <text x="66" y="347" text-anchor="middle" font-size="8" fill="#FCA5A5">⚠ Point critique</text>
+
+  <rect x="128" y="310" width="110" height="52" rx="4" fill="#1E293B"/>
+  <text x="183" y="333" text-anchor="middle" font-size="9" fill="#CBD5E1">Analyse les</text>
+  <text x="183" y="347" text-anchor="middle" font-size="9" fill="#CBD5E1">classements</text>
+
+  <rect x="244" y="310" width="110" height="52" rx="4" fill="#1E293B"/>
+  <text x="299" y="333" text-anchor="middle" font-size="9" fill="#CBD5E1">Que signifie</text>
+  <text x="299" y="347" text-anchor="middle" font-size="9" fill="#CBD5E1">ce résultat ?</text>
+
+  <rect x="360" y="310" width="68" height="52" rx="4" fill="#1E293B"/>
+  <text x="394" y="340" text-anchor="middle" font-size="13" fill="#FBBF24">★★☆☆☆</text>
+
+  <rect x="434" y="310" width="120" height="52" rx="4" fill="#3B1A1A"/>
+  <text x="494" y="333" text-anchor="middle" font-size="9" fill="#FCA5A5">Compréhension</text>
+  <text x="494" y="347" text-anchor="middle" font-size="9" fill="#FCA5A5">très difficile</text>
+
+  <rect x="560" y="310" width="150" height="52" rx="4" fill="#1E293B"/>
+  <text x="635" y="333" text-anchor="middle" font-size="9" fill="#4ADE80">Visualisation</text>
+  <text x="635" y="347" text-anchor="middle" font-size="9" fill="#4ADE80">simplifiée</text>
+
+  
+  <rect x="10" y="367" width="112" height="52" rx="4" fill="#1E3A5F"/>
+  <text x="66" y="390" text-anchor="middle" font-size="10" font-weight="bold" fill="#60A5FA">Comparaison</text>
+  <text x="66" y="404" text-anchor="middle" font-size="10" font-weight="bold" fill="#60A5FA">sociale</text>
+
+  <rect x="128" y="367" width="110" height="52" rx="4" fill="#172032"/>
+  <text x="183" y="390" text-anchor="middle" font-size="9" fill="#CBD5E1">Consulte</text>
+  <text x="183" y="404" text-anchor="middle" font-size="9" fill="#CBD5E1">sa ligue</text>
+
+  <rect x="244" y="367" width="110" height="52" rx="4" fill="#172032"/>
+  <text x="299" y="390" text-anchor="middle" font-size="9" fill="#CBD5E1">Ai-je gagné</text>
+  <text x="299" y="404" text-anchor="middle" font-size="9" fill="#CBD5E1">des points ?</text>
+
+  <rect x="360" y="367" width="68" height="52" rx="4" fill="#172032"/>
+  <text x="394" y="397" text-anchor="middle" font-size="13" fill="#FBBF24">★★★★☆</text>
+
+  <rect x="434" y="367" width="120" height="52" rx="4" fill="#172032"/>
+  <text x="494" y="390" text-anchor="middle" font-size="9" fill="#F87171">Classements</text>
+  <text x="494" y="404" text-anchor="middle" font-size="9" fill="#F87171">complexes</text>
+
+  <rect x="560" y="367" width="150" height="52" rx="4" fill="#172032"/>
+  <text x="635" y="390" text-anchor="middle" font-size="9" fill="#4ADE80">Historique</text>
+  <text x="635" y="404" text-anchor="middle" font-size="9" fill="#4ADE80">et progression</text>
+
+  
+  <polyline points="394,122 394,179 394,236 394,282 394,348 394,404" stroke="none" fill="none"/>
+
+  
+  <rect x="720" y="82" width="170" height="82" rx="6" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <text x="805" y="99" text-anchor="middle" font-size="10" font-weight="bold" fill="#94A3B8">LÉGENDE</text>
+  <rect x="730" y="107" width="10" height="10" rx="2" fill="#F87171"/>
+  <text x="746" y="117" font-size="9" fill="#94A3B8">Friction élevée</text>
+  <rect x="730" y="123" width="10" height="10" rx="2" fill="#4ADE80"/>
+  <text x="746" y="133" font-size="9" fill="#94A3B8">Opportunité</text>
+  <rect x="730" y="139" width="10" height="10" rx="2" fill="#3B1A1A" stroke="#F87171" stroke-width="1"/>
+  <text x="746" y="149" font-size="9" fill="#94A3B8">Point critique UX</text>
+
+  
+  <rect x="720" y="175" width="170" height="110" rx="6" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <text x="805" y="192" text-anchor="middle" font-size="10" font-weight="bold" fill="#94A3B8">COURBE ÉMOTION</text>
+  <polyline points="730,270 756,255 782,240 808,240 834,275 860,255 886,255" stroke="#2563EB" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="730" cy="270" r="3" fill="#FBBF24"/>
+  <circle cx="756" cy="255" r="3" fill="#FBBF24"/>
+  <circle cx="782" cy="240" r="3" fill="#FBBF24"/>
+  <circle cx="808" cy="240" r="3" fill="#FBBF24"/>
+  <circle cx="834" cy="275" r="4" fill="#F87171"/>
+  <circle cx="860" cy="255" r="3" fill="#FBBF24"/>
+  <line x1="730" y1="280" x2="886" y2="280" stroke="#334155" stroke-width="1"/>
+  <text x="779" y="290" font-size="7" fill="#64748B">Anticipation</text>
+  <text x="829" y="290" font-size="7" fill="#F87171">⚠ Conséq.</text>
+</svg>

@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "PickTheCup"
+version = "1.0.0"
+id = "artifacts/fansphere"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24114
+
+[services.development]
+run = "pnpm --filter @workspace/fansphere run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/fansphere", "run", "build" ]
+publicDir = "artifacts/fansphere/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24114"
+BASE_PATH = "/"

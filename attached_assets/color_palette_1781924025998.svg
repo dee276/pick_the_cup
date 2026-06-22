@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 340" font-family="Arial, sans-serif">
+  <rect width="800" height="340" fill="#0F172A"/>
+  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#FFFFFF">Palette de Couleurs — FanSphere Design System</text>
+
+  
+  <text x="30" y="58" font-size="11" font-weight="bold" fill="#94A3B8">PRIMAIRE</text>
+  <rect x="30" y="65" width="70" height="50" rx="6" fill="#EFF6FF"/>
+  <text x="65" y="95" text-anchor="middle" font-size="8" fill="#1E293B">50</text>
+  <text x="65" y="106" text-anchor="middle" font-size="7" fill="#475569">EFF6FF</text>
+
+  <rect x="106" y="65" width="70" height="50" rx="6" fill="#BFDBFE"/>
+  <text x="141" y="95" text-anchor="middle" font-size="8" fill="#1E293B">200</text>
+  <text x="141" y="106" text-anchor="middle" font-size="7" fill="#475569">BFDBFE</text>
+
+  <rect x="182" y="65" width="70" height="50" rx="6" fill="#60A5FA"/>
+  <text x="217" y="95" text-anchor="middle" font-size="8" fill="#1E293B">400</text>
+  <text x="217" y="106" text-anchor="middle" font-size="7" fill="#1E293B">60A5FA</text>
+
+  <rect x="258" y="65" width="70" height="50" rx="6" fill="#2563EB"/>
+  <text x="293" y="90" text-anchor="middle" font-size="8" font-weight="bold" fill="#FFFFFF">600 ★</text>
+  <text x="293" y="105" text-anchor="middle" font-size="7" fill="#BFDBFE">2563EB</text>
+
+  <rect x="334" y="65" width="70" height="50" rx="6" fill="#1D4ED8"/>
+  <text x="369" y="95" text-anchor="middle" font-size="8" fill="#FFFFFF">700</text>
+  <text x="369" y="106" text-anchor="middle" font-size="7" fill="#BFDBFE">1D4ED8</text>
+
+  <rect x="410" y="65" width="70" height="50" rx="6" fill="#1E40AF"/>
+  <text x="445" y="95" text-anchor="middle" font-size="8" fill="#FFFFFF">800</text>
+  <text x="445" y="106" text-anchor="middle" font-size="7" fill="#BFDBFE">1E40AF</text>
+
+  <rect x="486" y="65" width="70" height="50" rx="6" fill="#172554"/>
+  <text x="521" y="95" text-anchor="middle" font-size="8" fill="#FFFFFF">900</text>
+  <text x="521" y="106" text-anchor="middle" font-size="7" fill="#93C5FD">172554</text>
+
+  <rect x="562" y="65" width="70" height="50" rx="6" fill="#0F172A"/>
+  <text x="597" y="95" text-anchor="middle" font-size="8" fill="#60A5FA">Nuit</text>
+  <text x="597" y="106" text-anchor="middle" font-size="7" fill="#60A5FA">0F172A</text>
+
+  
+  <text x="30" y="140" font-size="11" font-weight="bold" fill="#94A3B8">SÉMANTIQUE</text>
+
+  <rect x="30" y="148" width="100" height="60" rx="6" fill="#15803D"/>
+  <text x="80" y="174" text-anchor="middle" font-size="11" fill="#FFFFFF">✓ Succès</text>
+  <text x="80" y="190" text-anchor="middle" font-size="9" fill="#BBF7D0">Qualification</text>
+  <text x="80" y="202" text-anchor="middle" font-size="7" fill="#BBF7D0">15803D</text>
+
+  <rect x="140" y="148" width="100" height="60" rx="6" fill="#D97706"/>
+  <text x="190" y="174" text-anchor="middle" font-size="11" fill="#FFFFFF">⚠ Warning</text>
+  <text x="190" y="190" text-anchor="middle" font-size="9" fill="#FDE68A">En danger</text>
+  <text x="190" y="202" text-anchor="middle" font-size="7" fill="#FDE68A">D97706</text>
+
+  <rect x="250" y="148" width="100" height="60" rx="6" fill="#DC2626"/>
+  <text x="300" y="174" text-anchor="middle" font-size="11" fill="#FFFFFF">✕ Erreur</text>
+  <text x="300" y="190" text-anchor="middle" font-size="9" fill="#FECACA">Élimination</text>
+  <text x="300" y="202" text-anchor="middle" font-size="7" fill="#FECACA">DC2626</text>
+
+  <rect x="360" y="148" width="100" height="60" rx="6" fill="#0891B2"/>
+  <text x="410" y="174" text-anchor="middle" font-size="11" fill="#FFFFFF">ℹ Info</text>
+  <text x="410" y="190" text-anchor="middle" font-size="9" fill="#A5F3FC">Notifications</text>
+  <text x="410" y="202" text-anchor="middle" font-size="7" fill="#A5F3FC">0891B2</text>
+
+  
+  <text x="30" y="232" font-size="11" font-weight="bold" fill="#94A3B8">NEUTRES</text>
+  <rect x="30" y="240" width="68" height="40" rx="6" fill="#F8FAFC"/>
+  <text x="64" y="265" text-anchor="middle" font-size="8" fill="#1E293B">N-50</text>
+  <rect x="104" y="240" width="68" height="40" rx="6" fill="#E2E8F0"/>
+  <text x="138" y="265" text-anchor="middle" font-size="8" fill="#1E293B">N-200</text>
+  <rect x="178" y="240" width="68" height="40" rx="6" fill="#94A3B8"/>
+  <text x="212" y="265" text-anchor="middle" font-size="8" fill="#FFFFFF">N-400</text>
+  <rect x="252" y="240" width="68" height="40" rx="6" fill="#475569"/>
+  <text x="286" y="265" text-anchor="middle" font-size="8" fill="#FFFFFF">N-600</text>
+  <rect x="326" y="240" width="68" height="40" rx="6" fill="#1E293B"/>
+  <text x="360" y="265" text-anchor="middle" font-size="8" fill="#94A3B8">N-800</text>
+  <rect x="400" y="240" width="68" height="40" rx="6" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+  <text x="434" y="265" text-anchor="middle" font-size="8" fill="#64748B">N-900</text>
+
+  
+  <rect x="500" y="148" width="280" height="140" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <text x="640" y="168" text-anchor="middle" font-size="11" font-weight="bold" fill="#94A3B8">CONFORMITÉ WCAG 2.2 AA</text>
+  <text x="520" y="190" font-size="10" fill="#4ADE80">✓ Blanc sur Bleu-600</text>
+  <text x="700" y="190" font-size="10" font-weight="bold" fill="#4ADE80">4.63:1</text>
+  <text x="520" y="210" font-size="10" fill="#4ADE80">✓ Blanc sur Vert-700</text>
+  <text x="700" y="210" font-size="10" font-weight="bold" fill="#4ADE80">5.12:1</text>
+  <text x="520" y="230" font-size="10" fill="#4ADE80">✓ Blanc sur Rouge-600</text>
+  <text x="700" y="230" font-size="10" font-weight="bold" fill="#4ADE80">4.81:1</text>
+  <text x="520" y="250" font-size="10" fill="#4ADE80">✓ N-800 sur N-50</text>
+  <text x="700" y="250" font-size="10" font-weight="bold" fill="#4ADE80">14.2:1</text>
+  <text x="520" y="270" font-size="10" fill="#FBBF24">~ Blanc sur Ambre-600</text>
+  <text x="700" y="270" font-size="10" font-weight="bold" fill="#FBBF24">3.21:1</text>
+  <text x="520" y="285" font-size="8" fill="#64748B">* Usage décoratif uniquement (icônes)</text>
+</svg>

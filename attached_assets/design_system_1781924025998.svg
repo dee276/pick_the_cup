@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" font-family="Arial, sans-serif">
+  <rect width="800" height="500" fill="#0F172A"/>
+  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#FFFFFF">Design System — Architecture Atomic Design</text>
+
+  
+  <rect x="20" y="50" width="760" height="85" rx="10" fill="#1E293B" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="40" y="74" font-size="12" font-weight="bold" fill="#2563EB">ATOMES</text>
+  <text x="40" y="90" font-size="9" fill="#64748B">Éléments fondamentaux non décomposables</text>
+
+  
+  <rect x="40" y="96" width="60" height="26" rx="13" fill="#2563EB"/>
+  <text x="70" y="113" text-anchor="middle" font-size="9" fill="#FFFFFF">Button</text>
+  <rect x="108" y="96" width="72" height="26" rx="13" fill="#2563EB"/>
+  <text x="144" y="113" text-anchor="middle" font-size="9" fill="#FFFFFF">Icon Button</text>
+  <rect x="188" y="96" width="66" height="26" rx="13" fill="#334155"/>
+  <text x="221" y="113" text-anchor="middle" font-size="9" fill="#CBD5E1">Text Field</text>
+  <rect x="262" y="96" width="72" height="26" rx="13" fill="#334155"/>
+  <text x="298" y="113" text-anchor="middle" font-size="9" fill="#CBD5E1">Search Field</text>
+  <rect x="342" y="96" width="52" height="26" rx="13" fill="#334155"/>
+  <text x="368" y="113" text-anchor="middle" font-size="9" fill="#CBD5E1">Avatar</text>
+  <rect x="402" y="96" width="48" height="26" rx="13" fill="#334155"/>
+  <text x="426" y="113" text-anchor="middle" font-size="9" fill="#CBD5E1">Badge</text>
+  <rect x="458" y="96" width="40" height="26" rx="13" fill="#334155"/>
+  <text x="478" y="113" text-anchor="middle" font-size="9" fill="#CBD5E1">Chip</text>
+  <rect x="506" y="96" width="80" height="26" rx="13" fill="#334155"/>
+  <text x="546" y="113" text-anchor="middle" font-size="9" fill="#CBD5E1">Score Display</text>
+  <rect x="594" y="96" width="50" height="26" rx="13" fill="#334155"/>
+  <text x="619" y="113" text-anchor="middle" font-size="9" fill="#CBD5E1">Toast</text>
+  <rect x="652" y="96" width="50" height="26" rx="13" fill="#334155"/>
+  <text x="677" y="113" text-anchor="middle" font-size="9" fill="#CBD5E1">Switch</text>
+  <rect x="710" y="96" width="60" height="26" rx="13" fill="#334155"/>
+  <text x="740" y="113" text-anchor="middle" font-size="9" fill="#CBD5E1">Skeleton</text>
+
+  
+  <line x1="400" y1="135" x2="400" y2="155" stroke="#2563EB" stroke-width="2"/>
+  <defs>
+    
+  </defs>
+
+  
+  <rect x="20" y="158" width="760" height="85" rx="10" fill="#1E293B" stroke="#15803D" stroke-width="1.5"/>
+  <text x="40" y="182" font-size="12" font-weight="bold" fill="#15803D">MOLÉCULES</text>
+  <text x="40" y="198" font-size="9" fill="#64748B">Combinaisons simples d'atomes formant un composant fonctionnel</text>
+
+  <rect x="40" y="204" width="90" height="26" rx="13" fill="#15803D"/>
+  <text x="85" y="221" text-anchor="middle" font-size="9" fill="#FFFFFF">Match Summary</text>
+  <rect x="138" y="204" width="84" height="26" rx="13" fill="#15803D"/>
+  <text x="180" y="221" text-anchor="middle" font-size="9" fill="#FFFFFF">Ranking Row</text>
+  <rect x="230" y="204" width="100" height="26" rx="13" fill="#166534"/>
+  <text x="280" y="221" text-anchor="middle" font-size="9" fill="#BBF7D0">Prediction Input</text>
+  <rect x="338" y="204" width="90" height="26" rx="13" fill="#166534"/>
+  <text x="383" y="221" text-anchor="middle" font-size="9" fill="#BBF7D0">Team Selector</text>
+  <rect x="436" y="204" width="100" height="26" rx="13" fill="#166534"/>
+  <text x="486" y="221" text-anchor="middle" font-size="9" fill="#BBF7D0">Notification Item</text>
+  <rect x="544" y="204" width="90" height="26" rx="13" fill="#166534"/>
+  <text x="589" y="221" text-anchor="middle" font-size="9" fill="#BBF7D0">Statistic Item</text>
+  <rect x="642" y="204" width="100" height="26" rx="13" fill="#166534"/>
+  <text x="692" y="221" text-anchor="middle" font-size="9" fill="#BBF7D0">Section Header</text>
+
+  
+  <line x1="400" y1="243" x2="400" y2="263" stroke="#15803D" stroke-width="2"/>
+  <defs>
+    
+  </defs>
+
+  
+  <rect x="20" y="266" width="760" height="85" rx="10" fill="#1E293B" stroke="#D97706" stroke-width="1.5"/>
+  <text x="40" y="290" font-size="12" font-weight="bold" fill="#D97706">ORGANISMES</text>
+  <text x="40" y="306" font-size="9" fill="#64748B">Sections complexes et autonomes de l'interface</text>
+
+  <rect x="40" y="312" width="100" height="26" rx="13" fill="#D97706"/>
+  <text x="90" y="329" text-anchor="middle" font-size="9" fill="#FFFFFF">Dashboard Home</text>
+  <rect x="148" y="312" width="78" height="26" rx="13" fill="#D97706"/>
+  <text x="187" y="329" text-anchor="middle" font-size="9" fill="#FFFFFF">Match Card</text>
+  <rect x="234" y="312" width="86" height="26" rx="13" fill="#92400E"/>
+  <text x="277" y="329" text-anchor="middle" font-size="9" fill="#FDE68A">Match Center</text>
+  <rect x="328" y="312" width="90" height="26" rx="13" fill="#92400E"/>
+  <text x="373" y="329" text-anchor="middle" font-size="9" fill="#FDE68A">Ranking Table</text>
+  <rect x="426" y="312" width="96" height="26" rx="13" fill="#92400E"/>
+  <text x="474" y="329" text-anchor="middle" font-size="9" fill="#FDE68A">Prediction Form</text>
+  <rect x="530" y="312" width="100" height="26" rx="13" fill="#92400E"/>
+  <text x="580" y="329" text-anchor="middle" font-size="9" fill="#FDE68A">League Dashboard</text>
+  <rect x="638" y="312" width="110" height="26" rx="13" fill="#92400E"/>
+  <text x="693" y="329" text-anchor="middle" font-size="9" fill="#FDE68A">Statistics Panel</text>
+
+  
+  <line x1="400" y1="351" x2="400" y2="371" stroke="#D97706" stroke-width="2"/>
+  <defs>
+    
+  </defs>
+
+  
+  <rect x="20" y="374" width="365" height="60" rx="10" fill="#1E293B" stroke="#0891B2" stroke-width="1.5"/>
+  <text x="40" y="396" font-size="12" font-weight="bold" fill="#0891B2">TEMPLATES</text>
+  <text x="40" y="412" font-size="9" fill="#64748B">Mise en page définie par écran</text>
+  <text x="40" y="426" font-size="9" fill="#94A3B8">Dashboard / Match / Classement / Prédiction / Ligue</text>
+
+  
+  <line x1="415" y1="404" x2="435" y2="404" stroke="#0891B2" stroke-width="2"/>
+  <defs>
+    
+  </defs>
+
+  
+  <rect x="435" y="374" width="345" height="60" rx="10" fill="#1E293B" stroke="#60A5FA" stroke-width="1.5"/>
+  <text x="455" y="396" font-size="12" font-weight="bold" fill="#60A5FA">PAGES</text>
+  <text x="455" y="412" font-size="9" fill="#64748B">Écrans finaux avec données réelles</text>
+  <text x="455" y="426" font-size="9" fill="#94A3B8">Accueil · Match Center · Ligues · Profil · Paramètres</text>
+
+  
+  <rect x="20" y="446" width="760" height="44" rx="8" fill="#172554" stroke="#1D4ED8" stroke-width="1"/>
+  <text x="40" y="464" font-size="10" font-weight="bold" fill="#93C5FD">COMPOSANTS SPÉCIFIQUES FANSPHERE :</text>
+  <text x="270" y="464" font-size="9" fill="#BFDBFE">Match Status Badge</text>
+  <text x="390" y="464" font-size="9" fill="#BFDBFE">•  Qualification Badge</text>
+  <text x="510" y="464" font-size="9" fill="#BFDBFE">•  League Rank Badge</text>
+  <text x="630" y="464" font-size="9" fill="#BFDBFE">•  Live Indicator</text>
+  <text x="40" y="482" font-size="9" fill="#BFDBFE">Prediction Confidence Indicator</text>
+  <text x="230" y="482" font-size="9" fill="#BFDBFE">•  Score Display</text>
+  <text x="330" y="482" font-size="9" fill="#BFDBFE">•  Stat Block</text>
+  <text x="420" y="482" font-size="9" fill="#BFDBFE">•  Empty State</text>
+  <text x="520" y="482" font-size="9" fill="#BFDBFE">•  Progress Indicator</text>
+</svg>
