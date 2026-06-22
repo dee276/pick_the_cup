@@ -213,7 +213,7 @@ export function HighlightsReel() {
 
         {/* Mobile: horizontal scroll */}
         <div className="md:hidden flex gap-3 overflow-x-auto pb-1 scrollbar-hide -mx-4 px-4">
-          {highlights.map((h) => (
+          {Array.isArray(highlights) && highlights.map((h) => (
             <div key={h.id} className="flex-shrink-0 w-44">
               <HighlightCard
                 h={h}
@@ -226,7 +226,7 @@ export function HighlightsReel() {
 
         {/* Desktop: grid */}
         <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-3">
-          {highlights.map((h) => (
+          {Array.isArray(highlights) && highlights.map((h) => (
             <HighlightCard
               key={h.id}
               h={h}

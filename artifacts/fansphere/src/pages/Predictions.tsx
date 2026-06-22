@@ -69,9 +69,9 @@ export default function Predictions() {
     },
   });
 
-  const upcomingMatches = (matches ?? []).filter((m) => m.status === "upcoming");
-  const predictionHistory = predictions ?? [];
-  const results = predictionHistory.filter((p) => p.status !== "pending");
+const upcomingMatches = Array.isArray(matches) ? matches.filter((m) => m.status === "upcoming") : [];
+const predictionHistory = Array.isArray(predictions) ? predictions : [];
+const results = predictionHistory.filter((p) => p.status !== "pending");
 
   const getScore = (matchId: number, team: "a" | "b") => scores[matchId]?.[team] ?? 0;
 

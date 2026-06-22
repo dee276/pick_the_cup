@@ -17,8 +17,7 @@ function GroupTable({ group }: { group: string }) {
     { query: { queryKey: getGetStandingsQueryKey({ group }) } }
   );
 
-  const groupData = standings?.find((g) => g.group === group);
-
+  const groupData = Array.isArray(standings) ? standings.find((g) => g.group === group) : null;
   if (isLoading) {
     return (
       <div className="space-y-2">

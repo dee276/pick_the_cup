@@ -185,7 +185,7 @@ export default function Dashboard() {
           </div>
 
           {/* Today's Matches */}
-          {dashboard.todayMatches.length > 0 && (
+          {dashboard?.todayMatches?.length > 0 && (
             <section>
               <div className="flex items-center justify-between mb-3">
                 <h2 className="text-base font-bold text-[#1E293B] flex items-center gap-2">
